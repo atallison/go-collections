@@ -1,5 +1,7 @@
 # Collection
 
+[![.github/workflows/test.yml](https://github.com/hidetatz/collection/actions/workflows/test.yml/badge.svg)](https://github.com/hidetatz/collection/actions/workflows/test.yml)
+
 Collection library using generics in Go
 
 ## Overview
