@@ -1,0 +1,27 @@
+on:
+  push:
+    branches:
+      - "main"
+    tags:
+      - "v*.*.*"
+  pull_request:
+
+
+jobs:
+  test:
+    name: Run unit test
+    runs-on: ubuntu-latest
+    steps:
+    # This is a workarond until Go officially suports generics.
+    # https://github.com/actions/setup-go/issues/21#issuecomment-565704236
+    - name: Install gotip
+      run: |
+        git clone --depth=1 https://go.googlesource.com/go $HOME/gotip
+        cd $HOME/gotip/src
+        ./make.bash
+        echo "GOROOT=$HOME/gotip" >> $GITHUB_ENV
+        echo "$HOME/gotip/bin:$PATH" >> $GITHUB_PATH
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Run go test
+      run: go test -race ./...
