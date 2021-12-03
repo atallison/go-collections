@@ -6,7 +6,7 @@ import (
 )
 
 func TestAdd(t *testing.T) {
-	al := New[int]()
+	al := NewArrayList[int]()
 	al.Add(1)
 	al.Add(2)
 	if !reflect.DeepEqual(al.values, []int{1, 2}) {
@@ -15,7 +15,7 @@ func TestAdd(t *testing.T) {
 }
 
 func TestAddAll(t *testing.T) {
-	al := New[int]()
+	al := NewArrayList[int]()
 	al.Add(1)
 	al.AddAll([]int{2, 3, 4})
 	al.AddAll([]int{5})
@@ -25,7 +25,7 @@ func TestAddAll(t *testing.T) {
 }
 
 func TestAddAt(t *testing.T) {
-	al := New[int]()
+	al := NewArrayList[int]()
 	if err := al.AddAt(0, 1); err != nil {
 		t.Errorf("unexpected err: %s", err)
 	}
@@ -56,7 +56,7 @@ func TestAddAt(t *testing.T) {
 }
 
 func TestAddAllAt(t *testing.T) {
-	al := New[int]()
+	al := NewArrayList[int]()
 	if err := al.AddAllAt(0, []int{1}); err != nil {
 		t.Errorf("unexpected err: %s", err)
 	}
