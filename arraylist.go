@@ -53,3 +53,8 @@ func (a *ArrayList[T]) AddAllAt(i int, es []T) error {
 	a.values = append(a.values[:i], append(es, a.values[i:]...)...)
 	return nil
 }
+
+// Clear removes all the data in the list. The list is still usable after clear.
+func (a *ArrayList[T]) Clear() {
+	a.values = []T{}
+}

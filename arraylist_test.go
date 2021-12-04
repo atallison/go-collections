@@ -71,3 +71,17 @@ func TestAddAllAt(t *testing.T) {
 	MustBeNil(t, al.AddAllAt(2, []int{5, 6}))
 	MustEqual(t, []int{1, 2, 5, 6, 3, 4}, al.values)
 }
+
+func TestClear(t *testing.T) {
+	al := NewArrayList[int]()
+
+	al.AddAll([]int{1, 2})
+	al.Clear()
+	MustEqual(t, []int{}, al.values)
+
+	al.AddAll([]int{3, 4})
+	MustEqual(t, []int{3, 4}, al.values)
+
+	al.Clear()
+	MustEqual(t, []int{}, al.values)
+}
