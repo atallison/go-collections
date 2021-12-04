@@ -69,3 +69,8 @@ func (a *ArrayList[T]) Get(index int) (ret T, err error) {
 
 	return a.values[index], nil
 }
+
+// IsEmpty returns true if the list is empty.
+func (a *ArrayList[T]) IsEmpty() bool {
+	return len(a.values) == 0
+}

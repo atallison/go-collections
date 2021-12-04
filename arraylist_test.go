@@ -101,3 +101,14 @@ func TestGet(t *testing.T) {
 	MustBeNil(t, err)
 	MustEqual(t, ret, 3)
 }
+
+func TestIsEmpty(t *testing.T) {
+	al := NewArrayList[int]()
+	MustEqual(t, true, al.IsEmpty())
+
+	al.Add(1)
+	MustEqual(t, false, al.IsEmpty())
+
+	al.Clear()
+	MustEqual(t, true, al.IsEmpty())
+}
