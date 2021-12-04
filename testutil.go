@@ -20,13 +20,6 @@ func MustBeNil(t *testing.T, v interface{}) {
 	}
 }
 
-func MustBeNonNil(t *testing.T, v interface{}) {
-	t.Helper()
-	if v == nil {
-		t.Errorf("non-nil is expected but got nil")
-	}
-}
-
 func MustBeErr(t *testing.T, expected, got error) {
 	t.Helper()
 	if !errors.Is(got, expected) {
