@@ -123,3 +123,22 @@ func TestLen(t *testing.T) {
 	al.AddAll([]int{2, 3, 4})
 	MustEqual(t, 4, al.Len())
 }
+
+func TestSet(t *testing.T) {
+	al := NewArrayList[int]()
+
+	err := al.Set(-1, 1)
+	MustBeErr(t, err, ErrInvalidIndex)
+
+	err = al.Set(1, 1)
+	MustBeErr(t, err, ErrInvalidIndex)
+
+	al.AddAll([]int{1, 2, 3})
+
+	err = al.Set(3, 4)
+	MustBeErr(t, err, ErrInvalidIndex)
+
+	err = al.Set(2, 4)
+	MustBeNil(t, err)
+	MustEqual(t, []int{1, 2, 4}, al.values)
+}

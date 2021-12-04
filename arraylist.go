@@ -61,7 +61,6 @@ func (a *ArrayList[T]) Clear() {
 
 // Get returns a value which locates at the given index of the list.
 // ErrInvalidIndex will be responded if the index < 0 or length <= index.
-// greater equal than
 func (a *ArrayList[T]) Get(index int) (ret T, err error) {
 	if index < 0 || len(a.values) <= index {
 		return ret, ErrInvalidIndex
@@ -78,4 +77,15 @@ func (a *ArrayList[T]) IsEmpty() bool {
 // Len returns the number of the elements in the list.
 func (a *ArrayList[T]) Len() int {
 	return len(a.values)
+}
+
+// Set replaces the value at the given index in the list with the given value.
+// ErrInvalidIndex will be responded if the index < 0 or length <= index.
+func (a *ArrayList[T]) Set(index int, v T) error {
+	if index < 0 || len(a.values) <= index {
+		return ErrInvalidIndex
+	}
+
+	a.values[index] = v
+	return nil
 }
