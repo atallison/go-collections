@@ -58,3 +58,14 @@ func (a *ArrayList[T]) AddAllAt(i int, es []T) error {
 func (a *ArrayList[T]) Clear() {
 	a.values = []T{}
 }
+
+// Get returns a value which locates at the given index of the list.
+// ErrInvalidIndex will be responded if the index < 0 or length <= index.
+// greater equal than
+func (a *ArrayList[T]) Get(index int) (ret T, err error) {
+	if index < 0 || len(a.values) <= index {
+		return ret, ErrInvalidIndex
+	}
+
+	return a.values[index], nil
+}

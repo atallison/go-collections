@@ -85,3 +85,19 @@ func TestClear(t *testing.T) {
 	al.Clear()
 	MustEqual(t, []int{}, al.values)
 }
+
+func TestGet(t *testing.T) {
+	al := NewArrayList[int]()
+
+	al.AddAll([]int{1, 2, 3})
+
+	_, err := al.Get(-1)
+	MustBeErr(t, err, ErrInvalidIndex)
+
+	_, err = al.Get(3)
+	MustBeErr(t, err, ErrInvalidIndex)
+
+	ret, err := al.Get(2)
+	MustBeNil(t, err)
+	MustEqual(t, ret, 3)
+}
