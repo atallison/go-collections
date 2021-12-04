@@ -5,18 +5,18 @@ type ArrayList[T any] struct {
 }
 
 func NewArrayList[T any]() *ArrayList[T] {
-	return &ArrayList[T]{}
+	return &ArrayList[T]{values: []T{}}
 }
 
-func(a *ArrayList[T]) Add(e T) {
+func (a *ArrayList[T]) Add(e T) {
 	a.values = append(a.values, e)
 }
 
-func(a *ArrayList[T]) AddAll(es []T) {
+func (a *ArrayList[T]) AddAll(es []T) {
 	a.values = append(a.values, es...)
 }
 
-func(a *ArrayList[T]) AddAt(i int, e T) error {
+func (a *ArrayList[T]) AddAt(i int, e T) error {
 	if i < 0 || len(a.values) < i {
 		return ErrInvalidIndex
 	}
@@ -31,7 +31,7 @@ func(a *ArrayList[T]) AddAt(i int, e T) error {
 	return nil
 }
 
-func(a *ArrayList[T]) AddAllAt(i int, es []T) error {
+func (a *ArrayList[T]) AddAllAt(i int, es []T) error {
 	if i < 0 || len(a.values) < i {
 		return ErrInvalidIndex
 	}
