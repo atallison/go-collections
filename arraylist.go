@@ -74,3 +74,8 @@ func (a *ArrayList[T]) Get(index int) (ret T, err error) {
 func (a *ArrayList[T]) IsEmpty() bool {
 	return len(a.values) == 0
 }
+
+// Len returns the number of the elements in the list.
+func (a *ArrayList[T]) Len() int {
+	return len(a.values)
+}

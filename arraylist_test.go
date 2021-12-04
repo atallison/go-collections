@@ -112,3 +112,14 @@ func TestIsEmpty(t *testing.T) {
 	al.Clear()
 	MustEqual(t, true, al.IsEmpty())
 }
+
+func TestLen(t *testing.T) {
+	al := NewArrayList[int]()
+	MustEqual(t, 0, al.Len())
+
+	al.Add(1)
+	MustEqual(t, 1, al.Len())
+
+	al.AddAll([]int{2, 3, 4})
+	MustEqual(t, 4, al.Len())
+}
