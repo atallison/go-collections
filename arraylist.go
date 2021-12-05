@@ -100,3 +100,23 @@ func (a *ArrayList[T]) Remove(index int) error {
 	a.values = append(a.values[:index], a.values[index+1:]...)
 	return nil
 }
+
+// RemoveRange removes values whose index is between from (inclusive) and to (exclusive).
+// The same value as from and to can be passed but it has no effect and no error will be responded.
+// ErrInvalidIndex will be responded if the given index is invalid.
+func (a *ArrayList[T]) RemoveRange(from, to int) error {
+	if from > to {
+		return ErrInvalidIndex
+	}
+
+	if from < 0 || len(a.values) <= from {
+		return ErrInvalidIndex
+	}
+
+	if len(a.values) < to {
+		return ErrInvalidIndex
+	}
+
+	a.values = append(a.values[:from], a.values[to:]...)
+	return nil
+}

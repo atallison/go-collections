@@ -158,3 +158,30 @@ func TestRemove(t *testing.T) {
 	MustBeNil(t, err)
 	MustEqual(t, []int{1, 3}, al.values)
 }
+
+func TestRemoveRange(t *testing.T) {
+	al := NewArrayList[int]()
+
+	al.AddAll([]int{1, 2, 3, 4, 5, 6})
+
+	err := al.RemoveRange(2, 1) // from must be less than to
+	MustBeErr(t, err, ErrInvalidIndex)
+
+	err = al.RemoveRange(-1, 1) // must not be negative
+	MustBeErr(t, err, ErrInvalidIndex)
+
+	err = al.RemoveRange(1, 7) // must not be too large values
+	MustBeErr(t, err, ErrInvalidIndex)
+
+	err = al.RemoveRange(1, 1)
+	MustBeNil(t, err)
+	MustEqual(t, []int{1, 2, 3, 4, 5, 6}, al.values)
+
+	err = al.RemoveRange(1, 3)
+	MustBeNil(t, err)
+	MustEqual(t, []int{1, 4, 5, 6}, al.values)
+
+	err = al.RemoveRange(0, 4)
+	MustBeNil(t, err)
+	MustEqual(t, []int{}, al.values)
+}
