@@ -194,3 +194,25 @@ func TestSlice(t *testing.T) {
 	MustEqual(t, []int{1, 2, 3, 4, 5, 6}, al.values)
 	MustEqual(t, s, al.values)
 }
+
+func TestSubList(t *testing.T) {
+	al := NewArrayList[int]()
+
+	al.AddAll([]int{1, 2, 3, 4, 5, 6})
+	n, err := al.SubList(2, 1) // from must be less than to
+	MustBeErr(t, err, ErrInvalidIndex)
+
+	n, err = al.SubList(-1, 1) // must not be negative
+	MustBeErr(t, err, ErrInvalidIndex)
+
+	n, err = al.SubList(1, 7) // must not be too large values
+	MustBeErr(t, err, ErrInvalidIndex)
+
+	n, err = al.SubList(1, 1)
+	MustBeNil(t, err)
+	MustEqual(t, []int{}, n.values)
+
+	n, err = al.SubList(1, 3)
+	MustBeNil(t, err)
+	MustEqual(t, []int{2, 3}, n.values)
+}

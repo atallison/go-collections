@@ -125,3 +125,23 @@ func (a *ArrayList[T]) RemoveRange(from, to int) error {
 func (a *ArrayList[T]) Slice() []T {
 	return a.values
 }
+
+// SubList returns the new ArrayList which contains the elements in the list between the specified fromIndex (inclusive) and toIndex (exclusive).
+func (a *ArrayList[T]) SubList(from, to int) (*ArrayList[T], error) {
+	if from > to {
+		return nil, ErrInvalidIndex
+	}
+
+	if from < 0 || len(a.values) <= from {
+		return nil, ErrInvalidIndex
+	}
+
+	if len(a.values) < to {
+		return nil, ErrInvalidIndex
+	}
+
+	n := NewArrayList[T]()
+	n.AddAll(a.values[from:to])
+
+	return n, nil
+}
