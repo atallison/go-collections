@@ -120,3 +120,8 @@ func (a *ArrayList[T]) RemoveRange(from, to int) error {
 	a.values = append(a.values[:from], a.values[to:]...)
 	return nil
 }
+
+// Slice returns underlying slice in the arraylist.
+func (a *ArrayList[T]) Slice() []T {
+	return a.values
+}

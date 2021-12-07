@@ -185,3 +185,12 @@ func TestRemoveRange(t *testing.T) {
 	MustBeNil(t, err)
 	MustEqual(t, []int{}, al.values)
 }
+
+func TestSlice(t *testing.T) {
+	al := NewArrayList[int]()
+
+	al.AddAll([]int{1, 2, 3, 4, 5, 6})
+	s := al.Slice()
+	MustEqual(t, []int{1, 2, 3, 4, 5, 6}, al.values)
+	MustEqual(t, s, al.values)
+}
