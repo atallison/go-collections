@@ -42,3 +42,14 @@ func (a *ComparableArrayList[T]) IndexOf(v T) int {
 	}
 	return -1
 }
+
+// LastIndexOf returns the last index of an value which is the same as given v.
+// It returns negative value if v is not found in the list.
+func (a *ComparableArrayList[T]) LastIndexOf(v T) int {
+	for i := len(a.ArrayList.values) - 1; i >= 0; i-- {
+		if v == a.ArrayList.values[i] {
+			return i
+		}
+	}
+	return -1
+}
