@@ -233,3 +233,12 @@ func TestReplaceAll(t *testing.T) {
 	al.ReplaceAll(func(v int) int { return v * 2 })
 	MustEqual(t, []int{2, 4, 6, 8, 10, 12}, al.values)
 }
+
+func TestMap(t *testing.T) {
+	al := NewArrayList[int]()
+
+	al.AddAll([]int{1, 2, 3, 4, 5, 6})
+	r := al.Map(func(v int) int { return v * 2 })
+	MustEqual(t, []int{2, 4, 6, 8, 10, 12}, r.values)
+	MustEqual(t, []int{1, 2, 3, 4, 5, 6}, al.values) // original list must not be changed
+}

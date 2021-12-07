@@ -166,3 +166,15 @@ func (a *ArrayList[T]) ReplaceAll(f func(v T) T) {
 		a.values[i] = f(v)
 	}
 }
+
+// ReplaceAll applies the given f to all the values in the list.
+// Map does not break the original arraylist. If you want to do that, you can use ReplaceAll.
+func (a *ArrayList[T]) Map(f func(v T) T) *ArrayList[T] {
+	ret := make([]T, len(a.values))
+	for i, v := range a.values {
+		ret[i] = f(v)
+	}
+	n := NewArrayList[T]()
+	n.AddAll(ret)
+	return n
+}
