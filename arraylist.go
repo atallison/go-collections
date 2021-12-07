@@ -122,10 +122,10 @@ func (a *ArrayList[T]) RemoveRange(from, to int) error {
 }
 
 // RemoveIf removes values if the f(value) returns true.
-func (a *ArrayList[T]) RemoveIf(f func(v T) bool) {
+func (a *ArrayList[T]) RemoveIf(f func(index int, v T) bool) {
 	vs := []T{}
-	for _, v := range a.values {
-		if f(v) {
+	for i, v := range a.values {
+		if f(i, v) {
 			continue
 		}
 		vs = append(vs, v)

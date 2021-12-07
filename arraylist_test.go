@@ -191,7 +191,7 @@ func TestRemoveIf(t *testing.T) {
 
 	al.AddAll([]int{1, 2, 3, 4, 5, 6})
 
-	al.RemoveIf(func(v int) bool { return v%2 == 0 })
+	al.RemoveIf(func(i, v int) bool { return v%2 == 0 })
 	MustEqual(t, []int{1, 3, 5}, al.values)
 }
 
