@@ -24,3 +24,16 @@ go version devel go1.18-c2397905e0 Sat Nov 13 03:33:55 2021 +0000 darwin/arm64
 ```
 
 You must use `gotip build` to build this library instead of `go build` .
+
+## What to be implemented
+
+- [x] ArrayList
+- [x] ComparableArrayList
+- [ ] LinkedList
+- [ ] DoublyLinkedList
+- [ ] Deque
+- [ ] Queue
+- [ ] PriorityQueue
+- [ ] HashSet
+- [ ] TreeSet
+- [ ] Stack
