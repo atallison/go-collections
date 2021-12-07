@@ -225,3 +225,11 @@ func TestSubList(t *testing.T) {
 	MustBeNil(t, err)
 	MustEqual(t, []int{2, 3}, n.values)
 }
+
+func TestReplaceAll(t *testing.T) {
+	al := NewArrayList[int]()
+
+	al.AddAll([]int{1, 2, 3, 4, 5, 6})
+	al.ReplaceAll(func(v int) int { return v * 2 })
+	MustEqual(t, []int{2, 4, 6, 8, 10, 12}, al.values)
+}

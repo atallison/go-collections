@@ -159,3 +159,10 @@ func (a *ArrayList[T]) SubList(from, to int) (*ArrayList[T], error) {
 
 	return n, nil
 }
+
+// ReplaceAll applies the given f to all the values in the list.
+func (a *ArrayList[T]) ReplaceAll(f func(v T) T) {
+	for i, v := range a.values {
+		a.values[i] = f(v)
+	}
+}
