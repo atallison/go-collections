@@ -102,7 +102,7 @@ func (a *ArrayList[T]) Remove(index int) error {
 }
 
 // RemoveRange removes values whose index is between from (inclusive) and to (exclusive).
-// The same value as from and to can be passed but it has no effect and no error will be responded.
+// The same values as from and to can be passed but it has no effect and no error will be responded.
 // ErrInvalidIndex will be responded if the given index is invalid.
 func (a *ArrayList[T]) RemoveRange(from, to int) error {
 	if from > to {
