@@ -143,18 +143,18 @@ func TestSet(t *testing.T) {
 	MustEqual(t, []int{1, 2, 4}, al.values)
 }
 
-func TestRemove(t *testing.T) {
+func TestRemoveAt(t *testing.T) {
 	al := NewArrayList[int]()
 
 	al.AddAll([]int{1, 2, 3})
 
-	err := al.Remove(-1)
+	err := al.RemoveAt(-1)
 	MustBeErr(t, err, ErrInvalidIndex)
 
-	err = al.Remove(3)
+	err = al.RemoveAt(3)
 	MustBeErr(t, err, ErrInvalidIndex)
 
-	err = al.Remove(1)
+	err = al.RemoveAt(1)
 	MustBeNil(t, err)
 	MustEqual(t, []int{1, 3}, al.values)
 }
