@@ -167,7 +167,7 @@ func (a *ArrayList[T]) ReplaceAll(f func(v T) T) {
 	}
 }
 
-// ReplaceAll applies the given f to all the values in the list.
+// Map applies f to the list values then return it as a new ArrayList.
 // Map does not break the original arraylist. If you want to do that, you can use ReplaceAll.
 func (a *ArrayList[T]) Map(f func(v T) T) *ArrayList[T] {
 	ret := make([]T, len(a.values))
@@ -177,4 +177,10 @@ func (a *ArrayList[T]) Map(f func(v T) T) *ArrayList[T] {
 	n := NewArrayList[T]()
 	n.AddAll(ret)
 	return n
+}
+
+func (a *ArrayList[T]) ForEach(f func(index int, v T)) {
+	for i, v := range a.values {
+		f(i, v)
+	}
 }

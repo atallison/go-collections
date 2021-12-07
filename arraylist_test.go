@@ -242,3 +242,15 @@ func TestMap(t *testing.T) {
 	MustEqual(t, []int{2, 4, 6, 8, 10, 12}, r.values)
 	MustEqual(t, []int{1, 2, 3, 4, 5, 6}, al.values) // original list must not be changed
 }
+
+func TestForEach(t *testing.T) {
+	al := NewArrayList[int]()
+
+	al.AddAll([]int{1, 2, 3, 4, 5, 6})
+	buff := []int{}
+	al.ForEach(func(index, v int) {
+		buff = append(buff, index*v)
+	})
+	MustEqual(t, []int{0, 2, 6, 12, 20, 30}, buff)
+	MustEqual(t, []int{1, 2, 3, 4, 5, 6}, al.values) // original list must not be changed
+}
