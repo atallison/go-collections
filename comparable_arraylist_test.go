@@ -15,3 +15,10 @@ func TestContains(t *testing.T) {
 	MustEqual(t, true, al.Contains(3))
 	MustEqual(t, false, al.Contains(0))
 }
+
+func TestIndexOf(t *testing.T) {
+	al := NewComparableArrayList[int]()
+	al.AddAll([]int{1, 2, 3, 4, 5, 6})
+	MustEqual(t, 4, al.IndexOf(5))
+	MustEqual(t, -1, al.IndexOf(0))
+}
