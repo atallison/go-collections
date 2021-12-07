@@ -254,3 +254,14 @@ func TestForEach(t *testing.T) {
 	MustEqual(t, []int{0, 2, 6, 12, 20, 30}, buff)
 	MustEqual(t, []int{1, 2, 3, 4, 5, 6}, al.values) // original list must not be changed
 }
+
+func TestFilter(t *testing.T) {
+	al := NewArrayList[int]()
+
+	al.AddAll([]int{1, 2, 3, 4, 5, 6})
+	r := al.Filter(func(index, v int) bool {
+		return v%2 == 0
+	})
+	MustEqual(t, []int{2, 4, 6}, r.values)
+	MustEqual(t, []int{1, 2, 3, 4, 5, 6}, al.values) // original list must not be changed
+}

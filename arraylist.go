@@ -185,3 +185,17 @@ func (a *ArrayList[T]) ForEach(f func(index int, v T)) {
 		f(i, v)
 	}
 }
+
+// Filter returns a new ArrayList which only contain filtered value by the given f.
+// Filter does not break the original ArrayList.
+func (a *ArrayList[T]) Filter(f func(index int, v T) bool) *ArrayList[T] {
+	ret := []T{}
+	for i, v := range a.values {
+		if f(i, v) {
+			ret = append(ret, v)
+		}
+	}
+	n := NewArrayList[T]()
+	n.AddAll(ret)
+	return n
+}
