@@ -179,6 +179,7 @@ func (a *ArrayList[T]) Map(f func(v T) T) *ArrayList[T] {
 	return n
 }
 
+// ForEach runs the given f to each value in the list.
 func (a *ArrayList[T]) ForEach(f func(index int, v T)) {
 	for i, v := range a.values {
 		f(i, v)
