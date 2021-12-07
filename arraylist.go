@@ -121,6 +121,20 @@ func (a *ArrayList[T]) RemoveRange(from, to int) error {
 	return nil
 }
 
+// RemoveIf removes values if the f(value) returns true.
+func (a *ArrayList[T]) RemoveIf(f func(v T) bool) {
+	vs := []T{}
+	for _, v := range a.values {
+		if f(v) {
+			continue
+		}
+		vs = append(vs, v)
+	}
+
+	a.Clear()
+	a.AddAll(vs)
+}
+
 // Slice returns underlying slice in the arraylist.
 func (a *ArrayList[T]) Slice() []T {
 	return a.values
