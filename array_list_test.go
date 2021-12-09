@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestAdd(t *testing.T) {
+func TestArrayList_Add(t *testing.T) {
 	al := NewArrayList[int]()
 	MustEqual(t, []int{}, al.values)
 	al.Add(1)
@@ -13,7 +13,7 @@ func TestAdd(t *testing.T) {
 	MustEqual(t, []int{1, 2}, al.values)
 }
 
-func TestAddAll(t *testing.T) {
+func TestArrayList_AddAll(t *testing.T) {
 	al := NewArrayList[int]()
 	al.AddAll([]int{1})
 	MustEqual(t, []int{1}, al.values)
@@ -28,7 +28,7 @@ func TestAddAll(t *testing.T) {
 	MustEqual(t, []int{1, 2, 3, 4, 5}, al.values)
 }
 
-func TestAddAt(t *testing.T) {
+func TestArrayList_AddAt(t *testing.T) {
 	al := NewArrayList[int]()
 
 	err := al.AddAt(1, 1)
@@ -53,7 +53,7 @@ func TestAddAt(t *testing.T) {
 	MustEqual(t, []int{4, 1, 3, 2}, al.values)
 }
 
-func TestAddAllAt(t *testing.T) {
+func TestArrayList_AddAllAt(t *testing.T) {
 	al := NewArrayList[int]()
 
 	err := al.AddAllAt(1, []int{1})
@@ -72,7 +72,7 @@ func TestAddAllAt(t *testing.T) {
 	MustEqual(t, []int{1, 2, 5, 6, 3, 4}, al.values)
 }
 
-func TestClear(t *testing.T) {
+func TestArrayList_Clear(t *testing.T) {
 	al := NewArrayList[int]()
 
 	al.AddAll([]int{1, 2})
@@ -86,7 +86,7 @@ func TestClear(t *testing.T) {
 	MustEqual(t, []int{}, al.values)
 }
 
-func TestGet(t *testing.T) {
+func TestArrayList_Get(t *testing.T) {
 	al := NewArrayList[int]()
 
 	al.AddAll([]int{1, 2, 3})
@@ -102,7 +102,7 @@ func TestGet(t *testing.T) {
 	MustEqual(t, ret, 3)
 }
 
-func TestIsEmpty(t *testing.T) {
+func TestArrayList_IsEmpty(t *testing.T) {
 	al := NewArrayList[int]()
 	MustEqual(t, true, al.IsEmpty())
 
@@ -113,7 +113,7 @@ func TestIsEmpty(t *testing.T) {
 	MustEqual(t, true, al.IsEmpty())
 }
 
-func TestLen(t *testing.T) {
+func TestArrayList_Len(t *testing.T) {
 	al := NewArrayList[int]()
 	MustEqual(t, 0, al.Len())
 
@@ -124,7 +124,7 @@ func TestLen(t *testing.T) {
 	MustEqual(t, 4, al.Len())
 }
 
-func TestSet(t *testing.T) {
+func TestArrayList_Set(t *testing.T) {
 	al := NewArrayList[int]()
 
 	err := al.Set(-1, 1)
@@ -143,7 +143,7 @@ func TestSet(t *testing.T) {
 	MustEqual(t, []int{1, 2, 4}, al.values)
 }
 
-func TestRemoveAt(t *testing.T) {
+func TestArrayList_RemoveAt(t *testing.T) {
 	al := NewArrayList[int]()
 
 	al.AddAll([]int{1, 2, 3})
@@ -159,7 +159,7 @@ func TestRemoveAt(t *testing.T) {
 	MustEqual(t, []int{1, 3}, al.values)
 }
 
-func TestRemoveRange(t *testing.T) {
+func TestArrayList_RemoveRange(t *testing.T) {
 	al := NewArrayList[int]()
 
 	al.AddAll([]int{1, 2, 3, 4, 5, 6})
@@ -186,7 +186,7 @@ func TestRemoveRange(t *testing.T) {
 	MustEqual(t, []int{}, al.values)
 }
 
-func TestRemoveIf(t *testing.T) {
+func TestArrayList_RemoveIf(t *testing.T) {
 	al := NewArrayList[int]()
 
 	al.AddAll([]int{1, 2, 3, 4, 5, 6})
@@ -195,7 +195,7 @@ func TestRemoveIf(t *testing.T) {
 	MustEqual(t, []int{1, 3, 5}, al.values)
 }
 
-func TestSlice(t *testing.T) {
+func TestArrayList_Slice(t *testing.T) {
 	al := NewArrayList[int]()
 
 	al.AddAll([]int{1, 2, 3, 4, 5, 6})
@@ -204,7 +204,7 @@ func TestSlice(t *testing.T) {
 	MustEqual(t, s, al.values)
 }
 
-func TestSubList(t *testing.T) {
+func TestArrayList_SubList(t *testing.T) {
 	al := NewArrayList[int]()
 
 	al.AddAll([]int{1, 2, 3, 4, 5, 6})
@@ -226,7 +226,7 @@ func TestSubList(t *testing.T) {
 	MustEqual(t, []int{2, 3}, n.values)
 }
 
-func TestReplaceAll(t *testing.T) {
+func TestArrayList_ReplaceAll(t *testing.T) {
 	al := NewArrayList[int]()
 
 	al.AddAll([]int{1, 2, 3, 4, 5, 6})
@@ -234,7 +234,7 @@ func TestReplaceAll(t *testing.T) {
 	MustEqual(t, []int{2, 4, 6, 8, 10, 12}, al.values)
 }
 
-func TestMap(t *testing.T) {
+func TestArrayList_Map(t *testing.T) {
 	al := NewArrayList[int]()
 
 	al.AddAll([]int{1, 2, 3, 4, 5, 6})
@@ -243,7 +243,7 @@ func TestMap(t *testing.T) {
 	MustEqual(t, []int{1, 2, 3, 4, 5, 6}, al.values) // original list must not be changed
 }
 
-func TestForEach(t *testing.T) {
+func TestArrayList_ForEach(t *testing.T) {
 	al := NewArrayList[int]()
 
 	al.AddAll([]int{1, 2, 3, 4, 5, 6})
@@ -255,7 +255,7 @@ func TestForEach(t *testing.T) {
 	MustEqual(t, []int{1, 2, 3, 4, 5, 6}, al.values) // original list must not be changed
 }
 
-func TestFilter(t *testing.T) {
+func TestArrayList_Filter(t *testing.T) {
 	al := NewArrayList[int]()
 
 	al.AddAll([]int{1, 2, 3, 4, 5, 6})
