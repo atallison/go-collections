@@ -9,7 +9,7 @@ import (
 func MustEqual(t *testing.T, expected, got interface{}) {
 	t.Helper()
 	if !reflect.DeepEqual(expected, got) {
-		t.Errorf("expected: %v but got %v", expected, got)
+		t.Errorf("expected: %v but got: %v", expected, got)
 	}
 }
 
