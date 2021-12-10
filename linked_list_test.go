@@ -49,6 +49,9 @@ func TestLinkedList_AddHead(t *testing.T) {
 	l.AddHead(3)
 	linkedListMustEqual(t, l, []int{3, 1, 2})
 	MustEqual(t, 3, l.length)
+
+	MustEqual(t, 3, l.head.v)
+	MustEqual(t, 2, l.tail.v)
 }
 
 func TestLinkedList_AddAt(t *testing.T) {
@@ -61,20 +64,30 @@ func TestLinkedList_AddAt(t *testing.T) {
 
 	MustBeErr(t, l.AddAt(-1, 4), ErrInvalidIndex)
 	MustBeErr(t, l.AddAt(4, 4), ErrInvalidIndex)
+
 	err := l.AddAt(0, 0)
 	MustBeNil(t, err)
 	linkedListMustEqual(t, l, []int{0, 1, 2, 3})
 	MustEqual(t, 4, l.length)
+
+	MustEqual(t, 0, l.head.v)
+	MustEqual(t, 3, l.tail.v)
 
 	err = l.AddAt(4, 4)
 	MustBeNil(t, err)
 	linkedListMustEqual(t, l, []int{0, 1, 2, 3, 4})
 	MustEqual(t, 5, l.length)
 
+	MustEqual(t, 0, l.head.v)
+	MustEqual(t, 4, l.tail.v)
+
 	err = l.AddAt(3, 5)
 	MustBeNil(t, err)
 	linkedListMustEqual(t, l, []int{0, 1, 2, 5, 3, 4})
 	MustEqual(t, 6, l.length)
+
+	MustEqual(t, 0, l.head.v)
+	MustEqual(t, 4, l.tail.v)
 }
 
 func TestLinkedList_AddAll(t *testing.T) {
@@ -83,13 +96,33 @@ func TestLinkedList_AddAll(t *testing.T) {
 	linkedListMustEqual(t, l, []int{})
 	MustEqual(t, 0, l.length)
 
+	l.AddAll([]int{0})
+	linkedListMustEqual(t, l, []int{0})
+	MustEqual(t, 1, l.length)
+
+	MustEqual(t, 0, l.head.v)
+	MustEqual(t, 0, l.tail.v)
+
 	l.AddAll([]int{1, 2, 3})
-	linkedListMustEqual(t, l, []int{1, 2, 3})
-	MustEqual(t, 3, l.length)
+	linkedListMustEqual(t, l, []int{0, 1, 2, 3})
+	MustEqual(t, 4, l.length)
+
+	MustEqual(t, 0, l.head.v)
+	MustEqual(t, 3, l.tail.v)
 
 	l.AddAll([]int{4, 5, 6})
-	linkedListMustEqual(t, l, []int{1, 2, 3, 4, 5, 6})
-	MustEqual(t, 6, l.length)
+	linkedListMustEqual(t, l, []int{0, 1, 2, 3, 4, 5, 6})
+	MustEqual(t, 7, l.length)
+
+	MustEqual(t, 0, l.head.v)
+	MustEqual(t, 6, l.tail.v)
+
+	l.AddAll([]int{7})
+	linkedListMustEqual(t, l, []int{0, 1, 2, 3, 4, 5, 6, 7})
+	MustEqual(t, 8, l.length)
+
+	MustEqual(t, 0, l.head.v)
+	MustEqual(t, 7, l.tail.v)
 }
 
 func TestLinkedList_Clear(t *testing.T) {

@@ -98,8 +98,8 @@ func (l *LinkedList[T]) AddAll(vs []T) {
 	for i, v := range vs {
 		n := &linkedNode[T]{v: v}
 		if i == 0 {
-			vhead = n
 			curr = n
+			vhead = curr
 		} else {
 			curr.next = n
 			curr = n
@@ -116,6 +116,7 @@ func (l *LinkedList[T]) AddAll(vs []T) {
 
 	// else, append
 	l.tail.next = vhead
+	l.tail = curr
 	l.length += len(vs)
 }
 
