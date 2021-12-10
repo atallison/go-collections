@@ -76,3 +76,18 @@ func TestLinkedList_AddAt(t *testing.T) {
 	linkedListMustEqual(t, l, []int{0, 1, 2, 5, 3, 4})
 	MustEqual(t, 6, l.length)
 }
+
+func TestLinkedList_AddAll(t *testing.T) {
+	l := NewLinkedList[int]()
+	l.AddAll([]int{})
+	linkedListMustEqual(t, l, []int{})
+	MustEqual(t, 0, l.length)
+
+	l.AddAll([]int{1, 2, 3})
+	linkedListMustEqual(t, l, []int{1, 2, 3})
+	MustEqual(t, 3, l.length)
+
+	l.AddAll([]int{4, 5, 6})
+	linkedListMustEqual(t, l, []int{1, 2, 3, 4, 5, 6})
+	MustEqual(t, 6, l.length)
+}

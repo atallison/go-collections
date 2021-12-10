@@ -86,3 +86,35 @@ func (l *LinkedList[T]) AddAt(index int, v T) error {
 	l.length++
 	return nil
 }
+
+// AddAll appends all the given value at the bottom.
+func (l *LinkedList[T]) AddAll(vs []T) {
+	if len(vs) == 0 {
+		return
+	}
+
+	var vhead *linkedNode[T] // vhead is always the first node which contains the head of the given values
+	var curr *linkedNode[T]  // curr is eventually the last value
+	for i, v := range vs {
+		n := &linkedNode[T]{v: v}
+		if i == 0 {
+			vhead = n
+			curr = n
+		} else {
+			curr.next = n
+			curr = n
+		}
+	}
+
+	if l.head == nil {
+		// if list is empty
+		l.head = vhead
+		l.tail = curr
+		l.length += len(vs)
+		return
+	}
+
+	// else, append
+	l.tail.next = vhead
+	l.length += len(vs)
+}
