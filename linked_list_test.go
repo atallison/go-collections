@@ -136,3 +136,17 @@ func TestLinkedList_Clone(t *testing.T) {
 	linkedListMustEqual(t, l, []int{1, 2, 3, 4, 5, 6})
 	MustEqual(t, 6, l.length)
 }
+
+func TestLinkedList_GetHead(t *testing.T) {
+	l := NewLinkedList[int]()
+	v, ok := l.GetHead()
+	MustEqual(t, false, ok)
+	MustEqual(t, 0, v)
+
+	l.AddAll([]int{1, 2, 3})
+	v, ok = l.GetHead()
+	MustEqual(t, true, ok)
+	MustEqual(t, 1, v)
+	linkedListMustEqual(t, l, []int{1, 2, 3})
+	MustEqual(t, 3, l.length)
+}

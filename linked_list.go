@@ -159,3 +159,12 @@ func (l *LinkedList[T]) Clone() *LinkedList[T] {
 	nl.length = l.length
 	return nl
 }
+
+// GetHead returns the head value.
+// If the list is empty, the second returned value will be false.
+func (l *LinkedList[T]) GetHead() (v T, ok bool) {
+	if l.head == nil {
+		return v, false
+	}
+	return l.head.v, true
+}
