@@ -161,3 +161,14 @@ type LinkedList[T any] struct {
 
 ### func (l *LinkedList[T]) Clone() *LinkedList[T]
     Clone returns the new LinkedList which the same with l.
+
+### func (l *LinkedList[T]) GetAt(index int) (v T, err error)
+    GetAt returns the value at the given index in the list.
+
+### func (l *LinkedList[T]) GetHead() (v T, ok bool)
+    GetHead returns the head value. If the value is not found since the list is
+    empty, the second returned value will be false.
+
+### func (l *LinkedList[T]) GetTail() (v T, ok bool)
+    GetTail returns the tail value. If the value is not found since the list is
+    empty, the second returned value will be false.
