@@ -27,7 +27,7 @@ You must use `gotip build` to build this library instead of `go build` .
 
 ## Documentation
 
-As of now, https://pkg.go.dev seems not generate the library documentation automatically.
+As of now, https://pkg.go.dev seems not generate the library documentation automatically if the code contains generics.
 I have written a small [gendoc](./gendoc) script and it is available in [./doc.md](./doc.md).
 
 ## What to be implemented
