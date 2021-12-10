@@ -162,7 +162,7 @@ func (l *LinkedList[T]) Clone() *LinkedList[T] {
 }
 
 // GetHead returns the head value.
-// If the list is empty, the second returned value will be false.
+// If the value is not found since the list is empty, the second returned value will be false.
 func (l *LinkedList[T]) GetHead() (v T, ok bool) {
 	if l.head == nil {
 		return v, false
