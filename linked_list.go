@@ -168,3 +168,25 @@ func (l *LinkedList[T]) GetHead() (v T, ok bool) {
 	}
 	return l.head.v, true
 }
+
+// GetAt returns the value at the given index in the list.
+func (l *LinkedList[T]) GetAt(index int) (v T, err error) {
+	if index < 0 || l.length <= index {
+		return v, ErrInvalidIndex
+	}
+
+	if index == 0 {
+		return l.head.v, nil
+	}
+
+	if index == l.length-1 {
+		return l.tail.v, nil
+	}
+
+	curr := l.head
+	for i := 0; i < index; i++ {
+		curr = curr.next
+	}
+
+	return curr.v, nil
+}

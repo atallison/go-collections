@@ -150,3 +150,26 @@ func TestLinkedList_GetHead(t *testing.T) {
 	linkedListMustEqual(t, l, []int{1, 2, 3})
 	MustEqual(t, 3, l.length)
 }
+
+func TestLinkedList_GetAt(t *testing.T) {
+	l := NewLinkedList[int]()
+	l.AddAll([]int{1, 2, 3})
+
+	v, err := l.GetAt(-1)
+	MustBeErr(t, ErrInvalidIndex, err)
+
+	v, err = l.GetAt(3)
+	MustBeErr(t, ErrInvalidIndex, err)
+
+	v, err = l.GetAt(0)
+	MustBeNil(t, err)
+	MustEqual(t, 1, v)
+
+	v, err = l.GetAt(1)
+	MustBeNil(t, err)
+	MustEqual(t, 2, v)
+
+	v, err = l.GetAt(2)
+	MustBeNil(t, err)
+	MustEqual(t, 3, v)
+}
