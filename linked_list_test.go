@@ -4,6 +4,8 @@ import (
 	"testing"
 )
 
+// linkedListMustEqual makes sure the given list is logically the same as the given slice.
+// For example, a linkedlist 1 -> 2 -> 3 -> nil is considered to be the same as [1, 2, 3].
 func linkedListMustEqual[T any](t *testing.T, list *LinkedList[T], values []T) {
 	t.Helper()
 	buff := []T{}
