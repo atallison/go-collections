@@ -1,0 +1,3 @@
+#!/bin/bash
+
+gotip doc -all | go run cmd/generics-doc-markdown/main.go > doc.md

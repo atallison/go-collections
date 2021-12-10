@@ -25,6 +25,11 @@ go version devel go1.18-c2397905e0 Sat Nov 13 03:33:55 2021 +0000 darwin/arm64
 
 You must use `gotip build` to build this library instead of `go build` .
 
+## Documentation
+
+As of now, https://pkg.go.dev seems not generate the library documentation automatically.
+I have written a small [gendoc](./gendoc) script and it is available in [./doc.md](./doc.md).
+
 ## What to be implemented
 
 - [x] ArrayList
