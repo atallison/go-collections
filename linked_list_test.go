@@ -91,3 +91,19 @@ func TestLinkedList_AddAll(t *testing.T) {
 	linkedListMustEqual(t, l, []int{1, 2, 3, 4, 5, 6})
 	MustEqual(t, 6, l.length)
 }
+
+func TestLinkedList_Clear(t *testing.T) {
+	l := NewLinkedList[int]()
+	l.AddAll([]int{1, 2, 3})
+	linkedListMustEqual(t, l, []int{1, 2, 3})
+	MustEqual(t, 3, l.length)
+
+	l.Clear()
+	linkedListMustEqual(t, l, []int{})
+	MustEqual(t, 0, l.length)
+
+	// makes sure the cleared list is still usable
+	l.AddAll([]int{1, 2, 3})
+	linkedListMustEqual(t, l, []int{1, 2, 3})
+	MustEqual(t, 3, l.length)
+}

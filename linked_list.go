@@ -118,3 +118,10 @@ func (l *LinkedList[T]) AddAll(vs []T) {
 	l.tail.next = vhead
 	l.length += len(vs)
 }
+
+// Clear removes all the data in the list. The list is still usable after clear.
+func (l *LinkedList[T]) Clear() {
+	l.head = nil
+	l.tail = nil
+	l.length = 0
+}
