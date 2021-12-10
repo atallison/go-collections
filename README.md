@@ -29,7 +29,7 @@ You must use `gotip build` to build this library instead of `go build` .
 
 As of now, https://pkg.go.dev seems not generate the library documentation automatically if the code contains generics.
 I have written a small [gendoc](./gendoc) script and the generated document is available in [./doc.md](./doc.md).
-Note that I really don't want to maintain this way and I hope generics official support in go package documentation.
+Note that I don't really want to maintain this way and I hope generics official support in go package documentation.
 
 ## What to be implemented
 
