@@ -191,3 +191,12 @@ func (l *LinkedList[T]) GetAt(index int) (v T, err error) {
 
 	return curr.v, nil
 }
+
+// GetTail returns the tail value.
+// If the value is not found since the list is empty, the second returned value will be false.
+func (l *LinkedList[T]) GetTail() (v T, ok bool) {
+	if l.tail == nil {
+		return v, false
+	}
+	return l.tail.v, true
+}

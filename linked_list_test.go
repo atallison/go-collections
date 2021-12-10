@@ -206,3 +206,22 @@ func TestLinkedList_GetAt(t *testing.T) {
 	MustBeNil(t, err)
 	MustEqual(t, 3, v)
 }
+
+func TestLinkedList_GetTail(t *testing.T) {
+	l := NewLinkedList[int]()
+	v, ok := l.GetTail()
+	MustEqual(t, false, ok)
+	MustEqual(t, 0, v)
+
+	l.AddAll([]int{1})
+	v, ok = l.GetTail()
+	MustEqual(t, true, ok)
+	MustEqual(t, 1, v)
+
+	l.AddAll([]int{2})
+	v, ok = l.GetTail()
+
+	linkedListMustEqual(t, l, []int{1, 2})
+	MustEqual(t, true, ok)
+	MustEqual(t, 2, v)
+}
