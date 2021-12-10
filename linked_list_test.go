@@ -107,3 +107,32 @@ func TestLinkedList_Clear(t *testing.T) {
 	linkedListMustEqual(t, l, []int{1, 2, 3})
 	MustEqual(t, 3, l.length)
 }
+
+func TestLinkedList_Clone(t *testing.T) {
+	l := NewLinkedList[int]()
+	l.AddAll([]int{1, 2, 3})
+	linkedListMustEqual(t, l, []int{1, 2, 3})
+	MustEqual(t, 3, l.length)
+
+	nl := l.Clone()
+	linkedListMustEqual(t, nl, []int{1, 2, 3})
+	MustEqual(t, 3, nl.length)
+
+	// add values into l
+	l.AddAll([]int{4, 5, 6})
+	linkedListMustEqual(t, l, []int{1, 2, 3, 4, 5, 6})
+	MustEqual(t, 6, l.length)
+
+	// makes sure the cloned list is not changed
+	linkedListMustEqual(t, nl, []int{1, 2, 3})
+	MustEqual(t, 3, nl.length)
+
+	// add values into nl
+	nl.AddAll([]int{7, 8, 9})
+	linkedListMustEqual(t, nl, []int{1, 2, 3, 7, 8, 9})
+	MustEqual(t, 6, nl.length)
+
+	// make srue the original list is not changed
+	linkedListMustEqual(t, l, []int{1, 2, 3, 4, 5, 6})
+	MustEqual(t, 6, l.length)
+}

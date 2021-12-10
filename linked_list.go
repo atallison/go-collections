@@ -125,3 +125,37 @@ func (l *LinkedList[T]) Clear() {
 	l.tail = nil
 	l.length = 0
 }
+
+// Clone returns the new LinkedList which the same with l.
+func (l *LinkedList[T]) Clone() *LinkedList[T] {
+	nl := NewLinkedList[T]()
+
+	if l.head == nil {
+		return nl
+	}
+
+	var nhead *linkedNode[T]
+	var ncurr *linkedNode[T]
+	curr := l.head
+	index := 0
+	for {
+		if curr == nil {
+			break
+		}
+		n := &linkedNode[T]{v: curr.v}
+		if index == 0 {
+			nhead = n
+			ncurr = n
+		} else {
+			ncurr.next = n
+			ncurr = n
+		}
+		curr = curr.next
+		index++
+	}
+
+	nl.head = nhead
+	nl.tail = ncurr
+	nl.length = l.length
+	return nl
+}
