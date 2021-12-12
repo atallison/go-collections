@@ -18,6 +18,7 @@ func linkedListMustEqual[T any](t *testing.T, list *LinkedList[T], values []T) {
 		curr = curr.next
 	}
 	MustEqual(t, values, buff)
+	MustEqual(t, len(values), list.length)
 }
 
 func TestLinkedList_Add(t *testing.T) {
@@ -244,4 +245,26 @@ func TestLinkedList_Len(t *testing.T) {
 	MustEqual(t, 3, l.Len())
 	l.Clear()
 	MustEqual(t, 0, l.Len())
+}
+
+func TestLinkedList_RemoveAt(t *testing.T) {
+	l := NewLinkedList[int]()
+	l.AddAll([]int{1, 2, 3, 4, 5})
+	err := l.RemoveAt(-1)
+	MustBeErr(t, err, ErrInvalidIndex)
+
+	err = l.RemoveAt(5)
+	MustBeErr(t, err, ErrInvalidIndex)
+
+	err = l.RemoveAt(2)
+	MustBeNil(t, err)
+	linkedListMustEqual(t, l, []int{1, 2, 4, 5})
+
+	err = l.RemoveAt(3)
+	MustBeNil(t, err)
+	linkedListMustEqual(t, l, []int{1, 2, 4})
+
+	err = l.RemoveAt(0)
+	MustBeNil(t, err)
+	linkedListMustEqual(t, l, []int{2, 4})
 }

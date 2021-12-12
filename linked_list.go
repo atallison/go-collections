@@ -210,3 +210,32 @@ func (l *LinkedList[T]) IsEmpty() bool {
 func (l *LinkedList[T]) Len() int {
 	return l.length
 }
+
+// RemoveAt removes a value at the given index in the list.
+// ErrInvalidIndex will be responded if the index < 0 or length <= index.
+func (l *LinkedList[T]) RemoveAt(index int) error {
+	if index < 0 || l.length <= index {
+		return ErrInvalidIndex
+	}
+
+	l.length--
+
+	// we must take care of the case index == 0 because
+	// l.head must be changed in the case
+	if index == 0 {
+		l.head = l.head.next
+		return nil
+	}
+
+	// else, we will need to take care of changing next, instead of head
+	curr := l.head
+	// After this loop, curr will be list[index-1]
+	// Let's say l is [1, 2, 3, 4, 5], if index is 2, curr will be 2 after the loop
+	for i := 0; i < index-1; i++ {
+		curr = curr.next
+	}
+
+	removed := curr.next
+	curr.next = removed.next
+	return nil
+}
