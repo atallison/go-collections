@@ -54,6 +54,14 @@ func (a *ArrayList[T]) AddAllAt(i int, es []T) error {
 	return nil
 }
 
+// Clone clones the arraylist and return it.
+// Modifying cloned list does not affect to the original one and vice versa.
+func (a *ArrayList[T]) Clone() *ArrayList[T] {
+	n := NewArrayList[T]()
+	n.values = a.values
+	return n
+}
+
 // Clear removes all the data in the list. The list is still usable after clear.
 func (a *ArrayList[T]) Clear() {
 	a.values = []T{}

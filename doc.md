@@ -57,6 +57,10 @@ type ArrayList[T any] struct {
     Clear removes all the data in the list. The list is still usable after
     clear.
 
+### func (a *ArrayList[T]) Clone() *ArrayList[T]
+    Clone clones the arraylist and return it. Modifying cloned list does not
+    affect to the original one and vice versa.
+
 ### func (a *ArrayList[T]) Filter(f func(index int, v T) bool) *ArrayList[T]
     Filter returns a new ArrayList which only contain filtered value by the
     given f. Filter does not break the original ArrayList.

@@ -72,6 +72,26 @@ func TestArrayList_AddAllAt(t *testing.T) {
 	MustEqual(t, []int{1, 2, 5, 6, 3, 4}, al.values)
 }
 
+func TestArrayList_Clone(t *testing.T) {
+	al := NewArrayList[int]()
+
+	al.AddAll([]int{1, 2})
+	MustEqual(t, []int{1, 2}, al.values)
+
+	nl := al.Clone()
+	MustEqual(t, []int{1, 2}, nl.values)
+
+	al.AddAll([]int{3, 4})
+	MustEqual(t, []int{1, 2, 3, 4}, al.values)
+	// makes sure moditying al does not affect to nl
+	MustEqual(t, []int{1, 2}, nl.values)
+
+	nl.AddAll([]int{5, 6})
+	MustEqual(t, []int{1, 2, 5, 6}, nl.values)
+	// makes sure moditying nl does not affect to al
+	MustEqual(t, []int{1, 2, 3, 4}, al.values)
+}
+
 func TestArrayList_Clear(t *testing.T) {
 	al := NewArrayList[int]()
 
