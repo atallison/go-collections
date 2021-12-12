@@ -225,3 +225,23 @@ func TestLinkedList_GetTail(t *testing.T) {
 	MustEqual(t, true, ok)
 	MustEqual(t, 2, v)
 }
+
+func TestLinkedList_IsEmpty(t *testing.T) {
+	l := NewLinkedList[int]()
+	MustEqual(t, true, l.IsEmpty())
+	l.AddAll([]int{1})
+	MustEqual(t, false, l.IsEmpty())
+	l.Clear()
+	MustEqual(t, true, l.IsEmpty())
+}
+
+func TestLinkedList_Len(t *testing.T) {
+	l := NewLinkedList[int]()
+	MustEqual(t, 0, l.Len())
+	l.Add(1)
+	MustEqual(t, 1, l.Len())
+	l.AddAll([]int{2, 3})
+	MustEqual(t, 3, l.Len())
+	l.Clear()
+	MustEqual(t, 0, l.Len())
+}

@@ -200,3 +200,13 @@ func (l *LinkedList[T]) GetTail() (v T, ok bool) {
 	}
 	return l.tail.v, true
 }
+
+// IsEmpty returns true if the list contains no values.
+func (l *LinkedList[T]) IsEmpty() bool {
+	return l.head == nil
+}
+
+// Len returns the length of the list.
+func (l *LinkedList[T]) Len() int {
+	return l.length
+}
