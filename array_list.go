@@ -98,7 +98,7 @@ func (a *ArrayList[T]) Set(index int, v T) error {
 	return nil
 }
 
-// Remove removes a value at the given index in the list.
+// RemoveAt removes a value at the given index in the list.
 // ErrInvalidIndex will be responded if the index < 0 or length <= index.
 func (a *ArrayList[T]) RemoveAt(index int) error {
 	if index < 0 || len(a.values) <= index {
