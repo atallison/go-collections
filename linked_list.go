@@ -239,3 +239,14 @@ func (l *LinkedList[T]) RemoveAt(index int) error {
 	curr.next = removed.next
 	return nil
 }
+
+// RemoveHead removes a head value.
+func (l *LinkedList[T]) RemoveHead() error {
+	if l.head == nil {
+		return ErrHeadNotFound
+	}
+
+	l.length--
+	l.head = l.head.next
+	return nil
+}

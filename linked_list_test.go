@@ -268,3 +268,19 @@ func TestLinkedList_RemoveAt(t *testing.T) {
 	MustBeNil(t, err)
 	linkedListMustEqual(t, l, []int{2, 4})
 }
+
+func TestLinkedList_RemoveHead(t *testing.T) {
+	l := NewLinkedList[int]()
+	err := l.RemoveHead()
+	MustBeErr(t, err, ErrHeadNotFound)
+
+	l.AddAll([]int{1, 2, 3, 4, 5})
+
+	err = l.RemoveHead()
+	MustBeNil(t, err)
+	linkedListMustEqual(t, l, []int{2, 3, 4, 5})
+
+	err = l.RemoveHead()
+	MustBeNil(t, err)
+	linkedListMustEqual(t, l, []int{3, 4, 5})
+}
