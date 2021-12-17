@@ -8,4 +8,7 @@ var (
 
 	// ErrHeadNotFound indicates the head node is not found.
 	ErrHeadNotFound = errors.New("head not found")
+
+	// ErrTailNotFound indicates the tail node is not found.
+	ErrTailNotFound = errors.New("tail not found")
 )

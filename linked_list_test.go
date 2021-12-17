@@ -283,4 +283,50 @@ func TestLinkedList_RemoveHead(t *testing.T) {
 	err = l.RemoveHead()
 	MustBeNil(t, err)
 	linkedListMustEqual(t, l, []int{3, 4, 5})
+
+	err = l.RemoveHead()
+	MustBeNil(t, err)
+	linkedListMustEqual(t, l, []int{4, 5})
+
+	err = l.RemoveHead()
+	MustBeNil(t, err)
+	linkedListMustEqual(t, l, []int{5})
+
+	err = l.RemoveHead()
+	MustBeNil(t, err)
+	linkedListMustEqual(t, l, []int{})
+
+	err = l.RemoveHead()
+	MustBeErr(t, err, ErrHeadNotFound)
+}
+
+func TestLinkedList_RemoveTail(t *testing.T) {
+	l := NewLinkedList[int]()
+	err := l.RemoveTail()
+	MustBeErr(t, err, ErrTailNotFound)
+
+	l.AddAll([]int{1, 2, 3, 4, 5})
+
+	err = l.RemoveTail()
+	MustBeNil(t, err)
+	linkedListMustEqual(t, l, []int{1, 2, 3, 4})
+
+	err = l.RemoveTail()
+	MustBeNil(t, err)
+	linkedListMustEqual(t, l, []int{1, 2, 3})
+
+	err = l.RemoveTail()
+	MustBeNil(t, err)
+	linkedListMustEqual(t, l, []int{1, 2})
+
+	err = l.RemoveTail()
+	MustBeNil(t, err)
+	linkedListMustEqual(t, l, []int{1})
+
+	err = l.RemoveTail()
+	MustBeNil(t, err)
+	linkedListMustEqual(t, l, []int{})
+
+	err = l.RemoveTail()
+	MustBeErr(t, err, ErrTailNotFound)
 }

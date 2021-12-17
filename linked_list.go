@@ -240,7 +240,7 @@ func (l *LinkedList[T]) RemoveAt(index int) error {
 	return nil
 }
 
-// RemoveHead removes a head value.
+// RemoveHead removes the head value.
 func (l *LinkedList[T]) RemoveHead() error {
 	if l.head == nil {
 		return ErrHeadNotFound
@@ -248,5 +248,35 @@ func (l *LinkedList[T]) RemoveHead() error {
 
 	l.length--
 	l.head = l.head.next
+	return nil
+}
+
+// RemoveTail removes the litailvalude.
+func (l *LinkedList[T]) RemoveTail() error {
+	if l.tail == nil {
+		return ErrTailNotFound
+	}
+
+	var curr *linkedNode[T]
+	isHead := true
+	for i := 0; i < l.length-1; i++ {
+		if i == 0 {
+			curr = l.head
+		} else {
+			curr = curr.next
+		}
+		isHead = false
+	}
+
+	if isHead {
+		l.head = nil
+		l.tail = nil
+	} else {
+		l.tail = curr
+		curr.next = nil
+	}
+
+	l.length--
+
 	return nil
 }
