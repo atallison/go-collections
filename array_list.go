@@ -207,3 +207,10 @@ func (a *ArrayList[T]) Filter(f func(index int, v T) bool) *ArrayList[T] {
 	n.AddAll(ret)
 	return n
 }
+
+// Iterator returns iteratable struct based on current Arraylist.
+// Note that the iterator has only a snapshot of list data as of this method is called,
+// and any modification to the list won't be reflected to the iterator.
+func (a *ArrayList[T]) Iterator() *ArrayListIterator[T] {
+	return &ArrayListIterator[T]{values: a.values, index: 0}
+}
