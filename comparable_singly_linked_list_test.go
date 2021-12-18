@@ -2,8 +2,8 @@ package collection
 
 import "testing"
 
-func TestComparableLinkedList_Remove(t *testing.T) {
-	al := NewComparableLinkedList[int]()
+func TestComparableSinglyLinkedList_Remove(t *testing.T) {
+	al := NewComparableSinglyLinkedList[int]()
 	al.Remove(1)
 	iteratorMustEqual[int](t, al.Iterator(), []int{})
 
@@ -27,8 +27,8 @@ func TestComparableLinkedList_Remove(t *testing.T) {
 	iteratorMustEqual[int](t, al.Iterator(), []int{3, 3, 3, 3})
 }
 
-func TestComparableLinkedList_Contains(t *testing.T) {
-	al := NewComparableLinkedList[int]()
+func TestComparableSinglyLinkedList_Contains(t *testing.T) {
+	al := NewComparableSinglyLinkedList[int]()
 	MustEqual(t, false, al.Contains(1))
 
 	al.AddAll([]int{1})

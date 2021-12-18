@@ -1,47 +1,47 @@
 package collection
 
-type ComparableLinkedList[T comparable] struct {
-	*LinkedList[T]
+type ComparableSinglyLinkedList[T comparable] struct {
+	*SinglyLinkedList[T]
 }
 
-// NewComparableLinkedList returns an LinkedList based on the specified type which contains only comparable values.
-func NewComparableLinkedList[T comparable]() *ComparableLinkedList[T] {
-	return &ComparableLinkedList[T]{LinkedList: NewLinkedList[T]()}
+// NewComparableSinglyLinkedList returns an SinglyLinkedList based on the specified type which contains only comparable values.
+func NewComparableSinglyLinkedList[T comparable]() *ComparableSinglyLinkedList[T] {
+	return &ComparableSinglyLinkedList[T]{SinglyLinkedList: NewSinglyLinkedList[T]()}
 }
 
 // Remove removes the same value with given v in the list.
 // It uses == operator to make sure if the values are the same.
-func (a *ComparableLinkedList[T]) Remove(v T) {
-	if a.LinkedList.length == 0 {
+func (a *ComparableSinglyLinkedList[T]) Remove(v T) {
+	if a.SinglyLinkedList.length == 0 {
 		return
 	}
 
-	if a.LinkedList.length == 1 {
-		if a.LinkedList.head.v == v {
-			a.LinkedList.head = nil
-			a.LinkedList.tail = nil
-			a.LinkedList.length = 0
+	if a.SinglyLinkedList.length == 1 {
+		if a.SinglyLinkedList.head.v == v {
+			a.SinglyLinkedList.head = nil
+			a.SinglyLinkedList.tail = nil
+			a.SinglyLinkedList.length = 0
 		}
 		return
 	}
 
 	// First, make sure the head value != v
 	for {
-		if a.LinkedList.head == nil {
+		if a.SinglyLinkedList.head == nil {
 			// all values are removed
 			return
 		}
-		if a.LinkedList.head.v != v {
+		if a.SinglyLinkedList.head.v != v {
 			break
 		} else {
-			a.LinkedList.head = a.LinkedList.head.next
-			a.LinkedList.length--
+			a.SinglyLinkedList.head = a.SinglyLinkedList.head.next
+			a.SinglyLinkedList.length--
 		}
 	}
 
 	// At this point, some values are remaining but we are sure the head is not v
-	prev := a.LinkedList.head
-	curr := a.LinkedList.head.next
+	prev := a.SinglyLinkedList.head
+	curr := a.SinglyLinkedList.head.next
 	for {
 		if curr == nil {
 			return
@@ -49,7 +49,7 @@ func (a *ComparableLinkedList[T]) Remove(v T) {
 
 		if curr.v == v {
 			prev.next = curr.next
-			a.LinkedList.length--
+			a.SinglyLinkedList.length--
 		}
 		next := curr.next
 		prev = curr
@@ -58,12 +58,12 @@ func (a *ComparableLinkedList[T]) Remove(v T) {
 }
 
 // Contains returns if the given value is contained in the list.
-func (a *ComparableLinkedList[T]) Contains(v T) bool {
-	if a.LinkedList.length == 0 {
+func (a *ComparableSinglyLinkedList[T]) Contains(v T) bool {
+	if a.SinglyLinkedList.length == 0 {
 		return false
 	}
 
-	curr := a.LinkedList.head
+	curr := a.SinglyLinkedList.head
 	for {
 		if curr == nil {
 			break
