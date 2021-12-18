@@ -75,15 +75,3 @@ func (a *ComparableLinkedList[T]) Contains(v T) bool {
 	}
 	return false
 }
-
-// IndexOf returns the first index of an value which is the same as given v.
-// It returns negative value if v is not found in the list.
-func (a *ComparableLinkedList[T]) IndexOf(v T) int {
-	return -1
-}
-
-// LastIndexOf returns the last index of an value which is the same as given v.
-// It returns negative value if v is not found in the list.
-func (a *ComparableLinkedList[T]) LastIndexOf(v T) int {
-	return -1
-}
