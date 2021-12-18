@@ -206,6 +206,17 @@ func (l *LinkedList[T]) IsEmpty() bool {
 	return l.head == nil
 }
 
+// Iterator returns iteratable struct.
+// Note that the iterator has only a snapshot of list data as of this method is called,
+// and any modification to the list won't be reflected to the iterator.
+func (l *LinkedList[T]) Iterator() *LinkedListIterator[T] {
+	return &LinkedListIterator[T]{
+		curr:  l.head,
+		index: 0,
+	}
+
+}
+
 // Len returns the length of the list.
 func (l *LinkedList[T]) Len() int {
 	return l.length

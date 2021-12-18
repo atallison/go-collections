@@ -29,3 +29,17 @@ func MustBeErr(t *testing.T, expected, got error) {
 		t.Errorf("expected error: %v but got %v", expected, got)
 	}
 }
+
+// iteratorMustEqual makes sure the given list is logically the same as the given slice.
+// For example, a linkedlist 1 -> 2 -> 3 -> nil is considered to be the same as [1, 2, 3].
+func iteratorMustEqual[T any](t *testing.T, i Iterator[T], values []T) {
+	t.Helper()
+	buff := []T{}
+	cnt := 0
+	for i.Next() {
+		buff = append(buff, i.Value())
+		cnt++
+	}
+	MustEqual(t, values, buff)
+	MustEqual(t, len(values), cnt)
+}
