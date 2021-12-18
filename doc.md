@@ -228,6 +228,10 @@ type LinkedList[T any] struct {
 ### func (l *LinkedList[T]) RemoveTail() error
     RemoveTail removes the litailvalude.
 
+### func (l *LinkedList[T]) Set(index int, v T) error
+    Set replaces the value at the given index in the list with the given value.
+    ErrInvalidIndex will be responded if the index < 0 or length <= index.
+
 ```go
 type LinkedListIterator[T any] struct {
 	// Has unexported fields.
