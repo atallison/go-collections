@@ -159,6 +159,23 @@ type ComparableArrayList[T comparable] struct {
     to make sure if the values are the same.
 
 ```go
+type ComparableLinkedList[T comparable] struct {
+	*LinkedList[T]
+}
+```
+
+### func NewComparableLinkedList[T comparable]() *ComparableLinkedList[T]
+    NewComparableLinkedList returns an LinkedList based on the specified type
+    which contains only comparable values.
+
+### func (a *ComparableLinkedList[T]) Contains(v T) bool
+    Contains returns if the given value is contained in the list.
+
+### func (a *ComparableLinkedList[T]) Remove(v T)
+    Remove removes the same value with given v in the list. It uses == operator
+    to make sure if the values are the same.
+
+```go
 type Iterator[T any] interface {
 	Next() bool
 	Value() T
