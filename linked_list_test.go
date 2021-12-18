@@ -313,3 +313,30 @@ func TestLinkedList_RemoveTail(t *testing.T) {
 	err = l.RemoveTail()
 	MustBeErr(t, err, ErrTailNotFound)
 }
+
+func TestLinkedList_Set(t *testing.T) {
+	l := NewLinkedList[int]()
+	l.AddAll([]int{1, 2, 3, 4, 5})
+
+	err := l.Set(-1, 6)
+	MustBeErr(t, ErrInvalidIndex, err)
+
+	err = l.Set(5, 6)
+	MustBeErr(t, ErrInvalidIndex, err)
+
+	err = l.Set(0, 6)
+	MustBeNil(t, err)
+	iteratorMustEqual[int](t, l.Iterator(), []int{6, 2, 3, 4, 5})
+
+	err = l.Set(4, 7)
+	MustBeNil(t, err)
+	iteratorMustEqual[int](t, l.Iterator(), []int{6, 2, 3, 4, 7})
+
+	err = l.Set(1, 8)
+	MustBeNil(t, err)
+	iteratorMustEqual[int](t, l.Iterator(), []int{6, 8, 3, 4, 7})
+
+	err = l.Set(3, 9)
+	MustBeNil(t, err)
+	iteratorMustEqual[int](t, l.Iterator(), []int{6, 8, 3, 9, 7})
+}

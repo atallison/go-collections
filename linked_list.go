@@ -291,3 +291,32 @@ func (l *LinkedList[T]) RemoveTail() error {
 
 	return nil
 }
+
+// Set replaces the value at the given index in the list with the given value.
+// ErrInvalidIndex will be responded if the index < 0 or length <= index.
+func (l *LinkedList[T]) Set(index int, v T) error {
+	if index < 0 || l.length <= index {
+		return ErrInvalidIndex
+	}
+
+	if index == 0 {
+		l.head.v = v
+		return nil
+	}
+
+	if index == l.length-1 {
+		l.tail.v = v
+		return nil
+	}
+
+	var curr *linkedNode[T]
+	for i := 0; i < index+1; i++ {
+		if i == 0 {
+			curr = l.head
+		} else {
+			curr = curr.next
+		}
+	}
+	curr.v = v
+	return nil
+}
