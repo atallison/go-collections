@@ -7,6 +7,12 @@
 var (
 	// ErrInvalidIndex indicates the given index is invalid for the operation.
 	ErrInvalidIndex = errors.New("invalid index")
+
+	// ErrHeadNotFound indicates the head node is not found.
+	ErrHeadNotFound = errors.New("head not found")
+
+	// ErrTailNotFound indicates the tail node is not found.
+	ErrTailNotFound = errors.New("tail not found")
 )
 ```
 
@@ -75,6 +81,11 @@ type ArrayList[T any] struct {
 ### func (a *ArrayList[T]) IsEmpty() bool
     IsEmpty returns true if the list is empty.
 
+### func (a *ArrayList[T]) Iterator() *ArrayListIterator[T]
+    Iterator returns iteratable struct based on current Arraylist. Note that the
+    iterator has only a snapshot of list data as of this method is called, and
+    any modification to the list won't be reflected to the iterator.
+
 ### func (a *ArrayList[T]) Len() int
     Len returns the number of the elements in the list.
 
@@ -84,8 +95,8 @@ type ArrayList[T any] struct {
     ReplaceAll.
 
 ### func (a *ArrayList[T]) RemoveAt(index int) error
-    Remove removes a value at the given index in the list. ErrInvalidIndex will
-    be responded if the index < 0 or length <= index.
+    RemoveAt removes a value at the given index in the list. ErrInvalidIndex
+    will be responded if the index < 0 or length <= index.
 
 ### func (a *ArrayList[T]) RemoveIf(f func(index int, v T) bool)
     RemoveIf removes values if the f(value) returns true.
@@ -111,6 +122,18 @@ type ArrayList[T any] struct {
     between the specified fromIndex (inclusive) and toIndex (exclusive).
 
 ```go
+type ArrayListIterator[T any] struct {
+	// Has unexported fields.
+}
+```
+    ArrayListIterator is an implementation of Iterator. Because ArrayList is not
+    concurrent safe, ArrayListIterator is not coucurrent safe as well.
+
+### func (ai *ArrayListIterator[T]) Next() bool
+
+### func (ai *ArrayListIterator[T]) Value() T
+
+```go
 type ComparableArrayList[T comparable] struct {
 	*ArrayList[T]
 }
@@ -134,6 +157,13 @@ type ComparableArrayList[T comparable] struct {
 ### func (a *ComparableArrayList[T]) Remove(v T)
     Remove removes the same value with given v in the list. It uses == operator
     to make sure if the values are the same.
+
+```go
+type Iterator[T any] interface {
+	Next() bool
+	Value() T
+}
+```
 
 ```go
 type LinkedList[T any] struct {
@@ -176,3 +206,35 @@ type LinkedList[T any] struct {
 ### func (l *LinkedList[T]) GetTail() (v T, ok bool)
     GetTail returns the tail value. If the value is not found since the list is
     empty, the second returned value will be false.
+
+### func (l *LinkedList[T]) IsEmpty() bool
+    IsEmpty returns true if the list contains no values.
+
+### func (l *LinkedList[T]) Iterator() *LinkedListIterator[T]
+    Iterator returns iteratable struct. Note that the iterator has only a
+    snapshot of list data as of this method is called, and any modification to
+    the list won't be reflected to the iterator.
+
+### func (l *LinkedList[T]) Len() int
+    Len returns the length of the list.
+
+### func (l *LinkedList[T]) RemoveAt(index int) error
+    RemoveAt removes a value at the given index in the list. ErrInvalidIndex
+    will be responded if the index < 0 or length <= index.
+
+### func (l *LinkedList[T]) RemoveHead() error
+    RemoveHead removes the head value.
+
+### func (l *LinkedList[T]) RemoveTail() error
+    RemoveTail removes the litailvalude.
+
+```go
+type LinkedListIterator[T any] struct {
+	// Has unexported fields.
+}
+```
+    LinkedListIterator is the iteratable made of LinkedList.
+
+### func (i *LinkedListIterator[T]) Next() bool
+
+### func (i *LinkedListIterator[T]) Value() T
