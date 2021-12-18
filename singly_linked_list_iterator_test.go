@@ -4,8 +4,8 @@ import (
 	"testing"
 )
 
-func TestLinkedListIterator(t *testing.T) {
-	l := NewLinkedList[int]()
+func TestSinglyLinkedListIterator(t *testing.T) {
+	l := NewSinglyLinkedList[int]()
 	l.AddAll([]int{1, 2, 3, 4, 5})
 	i := l.Iterator()
 
