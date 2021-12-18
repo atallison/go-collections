@@ -4,10 +4,10 @@ import (
 	"testing"
 )
 
-func TestSinglyLinkedList_Add(t *testing.T) {
-	l := NewSinglyLinkedList[int]()
-	MustEqual(t, (*singlyLinkedNode[int])(nil), l.head)
-	MustEqual(t, (*singlyLinkedNode[int])(nil), l.tail)
+func TestLinkedList_Add(t *testing.T) {
+	l := NewLinkedList[int]()
+	MustEqual(t, (*linkedNode[int])(nil), l.head)
+	MustEqual(t, (*linkedNode[int])(nil), l.tail)
 
 	l.Add(1)
 	MustEqual(t, 1, l.head.v)
@@ -20,13 +20,13 @@ func TestSinglyLinkedList_Add(t *testing.T) {
 	MustEqual(t, l.tail, l.head.next)
 	MustEqual(t, 2, l.tail.v)
 	MustEqual(t, 2, l.length)
-	MustEqual(t, (*singlyLinkedNode[int])(nil), l.tail.next)
+	MustEqual(t, (*linkedNode[int])(nil), l.tail.next)
 }
 
-func TestSinglyLinkedList_AddHead(t *testing.T) {
-	l := NewSinglyLinkedList[int]()
-	MustEqual(t, (*singlyLinkedNode[int])(nil), l.head)
-	MustEqual(t, (*singlyLinkedNode[int])(nil), l.tail)
+func TestLinkedList_AddHead(t *testing.T) {
+	l := NewLinkedList[int]()
+	MustEqual(t, (*linkedNode[int])(nil), l.head)
+	MustEqual(t, (*linkedNode[int])(nil), l.tail)
 
 	l.Add(1)
 	l.Add(2)
@@ -38,8 +38,8 @@ func TestSinglyLinkedList_AddHead(t *testing.T) {
 	MustEqual(t, 2, l.tail.v)
 }
 
-func TestSinglyLinkedList_AddAt(t *testing.T) {
-	l := NewSinglyLinkedList[int]()
+func TestLinkedList_AddAt(t *testing.T) {
+	l := NewLinkedList[int]()
 	l.Add(1)
 	l.Add(2)
 	l.Add(3)
@@ -74,8 +74,8 @@ func TestSinglyLinkedList_AddAt(t *testing.T) {
 	MustEqual(t, 4, l.tail.v)
 }
 
-func TestSinglyLinkedList_AddAll(t *testing.T) {
-	l := NewSinglyLinkedList[int]()
+func TestLinkedList_AddAll(t *testing.T) {
+	l := NewLinkedList[int]()
 	l.AddAll([]int{})
 	iteratorMustEqual[int](t, l.Iterator(), []int{})
 	MustEqual(t, 0, l.length)
@@ -109,8 +109,8 @@ func TestSinglyLinkedList_AddAll(t *testing.T) {
 	MustEqual(t, 7, l.tail.v)
 }
 
-func TestSinglyLinkedList_Clear(t *testing.T) {
-	l := NewSinglyLinkedList[int]()
+func TestLinkedList_Clear(t *testing.T) {
+	l := NewLinkedList[int]()
 	l.AddAll([]int{1, 2, 3})
 	iteratorMustEqual[int](t, l.Iterator(), []int{1, 2, 3})
 	MustEqual(t, 3, l.length)
@@ -125,8 +125,8 @@ func TestSinglyLinkedList_Clear(t *testing.T) {
 	MustEqual(t, 3, l.length)
 }
 
-func TestSinglyLinkedList_Clone(t *testing.T) {
-	l := NewSinglyLinkedList[int]()
+func TestLinkedList_Clone(t *testing.T) {
+	l := NewLinkedList[int]()
 	l.AddAll([]int{1, 2, 3})
 	iteratorMustEqual[int](t, l.Iterator(), []int{1, 2, 3})
 	MustEqual(t, 3, l.length)
@@ -154,8 +154,8 @@ func TestSinglyLinkedList_Clone(t *testing.T) {
 	MustEqual(t, 6, l.length)
 }
 
-func TestSinglyLinkedList_GetHead(t *testing.T) {
-	l := NewSinglyLinkedList[int]()
+func TestLinkedList_GetHead(t *testing.T) {
+	l := NewLinkedList[int]()
 	v, ok := l.GetHead()
 	MustEqual(t, false, ok)
 	MustEqual(t, 0, v)
@@ -168,8 +168,8 @@ func TestSinglyLinkedList_GetHead(t *testing.T) {
 	MustEqual(t, 3, l.length)
 }
 
-func TestSinglyLinkedList_GetAt(t *testing.T) {
-	l := NewSinglyLinkedList[int]()
+func TestLinkedList_GetAt(t *testing.T) {
+	l := NewLinkedList[int]()
 	l.AddAll([]int{1, 2, 3})
 
 	v, err := l.GetAt(-1)
@@ -191,8 +191,8 @@ func TestSinglyLinkedList_GetAt(t *testing.T) {
 	MustEqual(t, 3, v)
 }
 
-func TestSinglyLinkedList_GetTail(t *testing.T) {
-	l := NewSinglyLinkedList[int]()
+func TestLinkedList_GetTail(t *testing.T) {
+	l := NewLinkedList[int]()
 	v, ok := l.GetTail()
 	MustEqual(t, false, ok)
 	MustEqual(t, 0, v)
@@ -210,8 +210,8 @@ func TestSinglyLinkedList_GetTail(t *testing.T) {
 	MustEqual(t, 2, v)
 }
 
-func TestSinglyLinkedList_IsEmpty(t *testing.T) {
-	l := NewSinglyLinkedList[int]()
+func TestLinkedList_IsEmpty(t *testing.T) {
+	l := NewLinkedList[int]()
 	MustEqual(t, true, l.IsEmpty())
 	l.AddAll([]int{1})
 	MustEqual(t, false, l.IsEmpty())
@@ -219,8 +219,8 @@ func TestSinglyLinkedList_IsEmpty(t *testing.T) {
 	MustEqual(t, true, l.IsEmpty())
 }
 
-func TestSinglyLinkedList_Len(t *testing.T) {
-	l := NewSinglyLinkedList[int]()
+func TestLinkedList_Len(t *testing.T) {
+	l := NewLinkedList[int]()
 	MustEqual(t, 0, l.Len())
 	l.Add(1)
 	MustEqual(t, 1, l.Len())
@@ -230,8 +230,8 @@ func TestSinglyLinkedList_Len(t *testing.T) {
 	MustEqual(t, 0, l.Len())
 }
 
-func TestSinglyLinkedList_RemoveAt(t *testing.T) {
-	l := NewSinglyLinkedList[int]()
+func TestLinkedList_RemoveAt(t *testing.T) {
+	l := NewLinkedList[int]()
 	l.AddAll([]int{1, 2, 3, 4, 5})
 	err := l.RemoveAt(-1)
 	MustBeErr(t, err, ErrInvalidIndex)
@@ -252,8 +252,8 @@ func TestSinglyLinkedList_RemoveAt(t *testing.T) {
 	iteratorMustEqual[int](t, l.Iterator(), []int{2, 4})
 }
 
-func TestSinglyLinkedList_RemoveHead(t *testing.T) {
-	l := NewSinglyLinkedList[int]()
+func TestLinkedList_RemoveHead(t *testing.T) {
+	l := NewLinkedList[int]()
 	err := l.RemoveHead()
 	MustBeErr(t, err, ErrHeadNotFound)
 
@@ -283,8 +283,8 @@ func TestSinglyLinkedList_RemoveHead(t *testing.T) {
 	MustBeErr(t, err, ErrHeadNotFound)
 }
 
-func TestSinglyLinkedList_RemoveTail(t *testing.T) {
-	l := NewSinglyLinkedList[int]()
+func TestLinkedList_RemoveTail(t *testing.T) {
+	l := NewLinkedList[int]()
 	err := l.RemoveTail()
 	MustBeErr(t, err, ErrTailNotFound)
 
@@ -314,8 +314,8 @@ func TestSinglyLinkedList_RemoveTail(t *testing.T) {
 	MustBeErr(t, err, ErrTailNotFound)
 }
 
-func TestSinglyLinkedList_Set(t *testing.T) {
-	l := NewSinglyLinkedList[int]()
+func TestLinkedList_Set(t *testing.T) {
+	l := NewLinkedList[int]()
 	l.AddAll([]int{1, 2, 3, 4, 5})
 
 	err := l.Set(-1, 6)

@@ -35,9 +35,8 @@ Note that I don't really want to maintain this way and I hope generics official 
 
 - [x] ArrayList
 - [x] ComparableArrayList
-- [x] SinglyLinkedList
-- [x] ComparableSinglyLinkedList
 - [ ] LinkedList
+- [ ] DoublyLinkedList
 - [ ] Deque
 - [ ] Queue
 - [ ] PriorityQueue
