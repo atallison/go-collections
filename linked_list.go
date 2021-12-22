@@ -37,5 +37,5 @@ func (l *LinkedList[T]) Head() T {
 }
 
 func (l *LinkedList[T]) Tail() T {
-	return l.dummy.prev().v
+	return l.dummy.previous().v
 }
