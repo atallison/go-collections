@@ -4,7 +4,7 @@ package collection
 // This is not concurrent safe.
 type LinkedList[T any] struct {
 	// dummy.next is head, dummy.prev is tail.
-	dummy  *singlyLinkedNode[T]
+	dummy  *linkedNode[T]
 	length int
 }
 
@@ -24,7 +24,7 @@ func (n *linkedNode[T]) previous() *linkedNode[T] {
 
 func NewLinkedList[T any]() *LinkedList[T] {
 	var zero T
-	dummy := &linkedNode{v: zero}
+	dummy := &linkedNode[T]{v: zero}
 	dummy.next, dummy.prev = dummy, dummy
 	return &LinkedList[T]{
 		dummy:  dummy,
@@ -33,9 +33,9 @@ func NewLinkedList[T any]() *LinkedList[T] {
 }
 
 func (l *LinkedList[T]) Head() T {
-	return l.dummy.next.v
+	return l.dummy.next().v
 }
 
 func (l *LinkedList[T]) Tail() T {
-	return l.dummy.prev.v
+	return l.dummy.prev().v
 }
