@@ -14,14 +14,6 @@ type linkedNode[T any] struct {
 	prev *linkedNode[T]
 }
 
-func (n *linkedNode[T]) next() *linkedNode[T] {
-	return n.next
-}
-
-func (n *linkedNode[T]) previous() *linkedNode[T] {
-	return n.prev
-}
-
 func NewLinkedList[T any]() *LinkedList[T] {
 	var zero T
 	dummy := &linkedNode[T]{v: zero}
@@ -33,9 +25,9 @@ func NewLinkedList[T any]() *LinkedList[T] {
 }
 
 func (l *LinkedList[T]) Head() T {
-	return l.dummy.next().v
+	return l.dummy.next.v
 }
 
 func (l *LinkedList[T]) Tail() T {
-	return l.dummy.previous().v
+	return l.dummy.prev.v
 }
