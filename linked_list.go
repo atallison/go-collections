@@ -4,30 +4,41 @@ package collection
 // This is not concurrent safe.
 type LinkedList[T any] struct {
 	// dummy.next is head, dummy.prev is tail.
-	dummy  *linkedNode[T]
+	dummy  *LinkedNode[T]
 	length int
 }
 
-// linkedNode is a node in LinkedList.
-type linkedNode[T any] struct {
-	v        T
-	prevNode *linkedNode[T]
-	nextNode *linkedNode[T]
+// LinkedNode is a node in LinkedList.
+type LinkedNode[T any] struct {
+	Value    T
+	prevNode *LinkedNode[T]
+	nextNode *LinkedNode[T]
 }
 
-func (n *linkedNode[T]) previous() *linkedNode[T] {
+func (n *LinkedNode[T]) previous() *LinkedNode[T] {
 	return n.prevNode
 }
 
-func (n *linkedNode[T]) next() *linkedNode[T] {
+func (n *LinkedNode[T]) next() *LinkedNode[T] {
 	return n.nextNode
+}
+
+// NewLinkedList returns an empty LinkedList based on the specified type T.
+func NewLinkedList[T any]() *LinkedList[T] {
+	var zero T // zero value
+	dummy := &LinkedNode[T]{Value: zero}
+	dummy.nextNode, dummy.prevNode = dummy, dummy
+	return &LinkedList[T]{
+		dummy:  dummy,
+		length: 0,
+	}
 }
 
 // insertAfter inserts given valud to the next to n.
 // Newly added node will be returned.
-func (n *linkedNode[T]) insertAfter(v T) *linkedNode[T] {
-	m := &linkedNode[T]{
-		v:        v,
+func (l *LinkedList[T]) insertAfter(n *LinkedNode[T], v T) *LinkedNode[T] {
+	m := &LinkedNode[T]{
+		Value:    v,
 		prevNode: n,
 		nextNode: n.nextNode,
 	}
@@ -36,21 +47,38 @@ func (n *linkedNode[T]) insertAfter(v T) *linkedNode[T] {
 	return m
 }
 
-// NewLinkedList returns an empty LinkedList based on the specified type T.
-func NewLinkedList[T any]() *LinkedList[T] {
-	var zero T // zero value
-	dummy := &linkedNode[T]{v: zero}
-	dummy.nextNode, dummy.prevNode = dummy, dummy
-	return &LinkedList[T]{
-		dummy:  dummy,
-		length: 0,
+// insertBefore inserts given valud to the previous to n.
+// Newly added node will be returned.
+func (l *LinkedList[T]) insertBefore(n *LinkedNode[T], v T) *LinkedNode[T] {
+	m := &LinkedNode[T]{
+		Value:    v,
+		prevNode: n.prevNode,
+		nextNode: n,
 	}
+	n.prevNode.nextNode = m
+	n.prevNode = m
+	return m
+}
+
+// delete deletes the node n.
+// The node next to the deleted node will be returned.
+func (l *LinkedList[T]) delete(n *LinkedNode[T]) *LinkedNode[T] {
+	if n == l.dummy {
+		return l.dummy
+	}
+	n.prevNode.nextNode = n.nextNode
+	n.nextNode.prevNode = n.prevNode
+	return n.nextNode
 }
 
 func (l *LinkedList[T]) Head() T {
-	return l.dummy.next().v
+	return l.dummy.next().Value
 }
 
 func (l *LinkedList[T]) Tail() T {
-	return l.dummy.previous().v
+	return l.dummy.previous().Value
+}
+
+func (l *LinkedList[T]) AddHead(v T) T {
+	return l.dummy.previous().Value
 }
