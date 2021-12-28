@@ -32,6 +32,11 @@ func (a *ArrayList[T]) Init() {
 	a.values = []T{}
 }
 
+// Iterator returns iterable object for the list.
+func (a *ArrayList[T]) Iterator() *Iterator[T] {
+	return &Iterator[T]{list: a, cursor: 0}
+}
+
 // GetAt returns the value at the given index.
 // When the given index is less than 0 or greater than the list size,
 // ErrInvalidIndex will be responded.
