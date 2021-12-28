@@ -7,7 +7,6 @@ import (
 )
 
 // SinglyLinkedList is an implementation of singly linked list.
-// This is not concurrent safe.
 type SinglyLinkedList[T any] struct {
 	sync.Mutex
 

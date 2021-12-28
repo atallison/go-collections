@@ -8,7 +8,8 @@ Collection library using generics in Go
 ## Overview
 
 This is a library to provide useful collection data structures and methods for Gophers.
-This library uses generics feature which gets available in Go officially at 1.18.
+All of them are concurrent safe by default.
+This library uses generics feature which will get available in Go officially on 1.18.
 
 ## Prerequisites
 
@@ -34,7 +35,6 @@ Note that I don't really want to maintain this way and I hope generics official 
 ## What to be implemented
 
 - [x] ArrayList
-- [x] ComparableArrayList
 - [x] SinglyLinkedList
 - [ ] LinkedList
 - [ ] Deque

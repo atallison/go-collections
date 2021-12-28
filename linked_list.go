@@ -1,7 +1,6 @@
 package collection
 
 // LinkedList is an implementation of doubly linked list.
-// This is not concurrent safe.
 type LinkedList[T any] struct {
 	// dummy.next is head, dummy.prev is tail.
 	dummy  *LinkedNode[T]
