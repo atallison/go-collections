@@ -8,8 +8,12 @@ Collection library using generics in Go
 ## Overview
 
 This is a library to provide useful collection data structures and methods for Gophers.
-All of them are concurrent safe by default.
 This library uses generics feature which will get available in Go officially on 1.18.
+
+## Usage
+
+All of the data structures are **not** concurrent safe by default.
+The synchronization to avoid data race is the caller's responsibility.
 
 ## Prerequisites
 
