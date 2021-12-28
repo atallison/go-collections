@@ -1,10 +1,17 @@
 package collection
 
+import (
+	"fmt"
+	"strings"
+	"sync"
+)
+
 // SinglyLinkedList is an implementation of singly linked list.
 // This is not concurrent safe.
 type SinglyLinkedList[T any] struct {
+	sync.Mutex
+
 	head   *singlyLinkedNode[T]
-	tail   *singlyLinkedNode[T]
 	length int
 }
 
@@ -13,36 +20,105 @@ type singlyLinkedNode[T any] struct {
 	next *singlyLinkedNode[T]
 }
 
-// NewSinglyLinkedList returns an ArrayList based on the specified type.
+// NewSinglyLinkedList returns an SinglyLinkedList based on the specified type.
 func NewSinglyLinkedList[T any]() *SinglyLinkedList[T] {
 	return &SinglyLinkedList[T]{}
 }
 
 // Add appends a given value to the bottom of the list.
-// This is O(1) because SinglyLinkedList internally has the pointer to the tail node.
 func (l *SinglyLinkedList[T]) Add(v T) {
+	l.Lock()
+	defer l.Unlock()
 	if l.head == nil {
 		// if head is nil, the list has no elements.
 		n := &singlyLinkedNode[T]{v: v, next: nil}
 		l.head = n
-		l.tail = n
 		l.length++
 		return
 	}
 
-	n := &singlyLinkedNode[T]{v: v, next: nil}
-	l.tail.next = n
-	l.tail = n
-	l.length++
+	var curr *singlyLinkedNode[T]
+	for i := 0; i < l.length; i++ {
+		if i == 0 {
+			curr = l.head
+		} else {
+			curr = curr.next
+		}
+
+		if i == l.length-1 {
+			n := &singlyLinkedNode[T]{v: v, next: nil}
+			curr.next = n
+			l.length++
+			break
+		}
+	}
+}
+
+// Clear removes all the data in the list. The list is still usable after clear.
+func (l *SinglyLinkedList[T]) Clear() {
+	l.Lock()
+	defer l.Unlock()
+	l.head = nil
+	l.length = 0
+}
+
+// IsEmpty returns true if the list contains no values.
+func (l *SinglyLinkedList[T]) IsEmpty() bool {
+	return l.head == nil
+}
+
+// Iterator returns iteratable struct.
+// Note that the iterator has only a snapshot of list data as of this method is called,
+// and any modification to the list won't be reflected to the iterator.
+func (l *SinglyLinkedList[T]) Iterator() Iterator[T] {
+	l.Lock()
+	defer l.Unlock()
+	return &SinglyLinkedListIterator[T]{
+		list:  l,
+		curr:  l.head,
+		index: 0,
+	}
+
+}
+
+// Len returns the length of the list.
+func (l *SinglyLinkedList[T]) Len() int {
+	return l.length
+}
+
+// String returns string form of the list.
+func (l *SinglyLinkedList[T]) String() string {
+	l.Lock()
+	defer l.Unlock()
+	if l.IsEmpty() {
+		return "[]"
+	}
+
+	var sb strings.Builder
+	sb.WriteString("[")
+	sb.WriteString(fmt.Sprintf("%v, ", l.head))
+	curr := l.head
+	for {
+		if curr == nil {
+			break
+		}
+
+		curr = curr.next
+		sb.WriteString(fmt.Sprintf("%v, ", curr))
+	}
+
+	sb.WriteString("]")
+	return sb.String()
 }
 
 // AddHead inserts the given value at the head of the list.
 func (l *SinglyLinkedList[T]) AddHead(v T) {
+	l.Lock()
+	defer l.Unlock()
 	if l.head == nil {
 		// if head is nil, the list has no elements.
 		n := &singlyLinkedNode[T]{v: v, next: nil}
 		l.head = n
-		l.tail = n
 		l.length++
 		return
 	}
@@ -53,48 +129,16 @@ func (l *SinglyLinkedList[T]) AddHead(v T) {
 	l.length++
 }
 
-// AddAt appends a given value at the given index position in the list.
-func (l *SinglyLinkedList[T]) AddAt(index int, v T) error {
-	if index < 0 || l.length < index {
-		return ErrInvalidIndex
-	}
-
-	if index == l.length {
-		l.Add(v)
-		return nil
-	}
-
-	if index == 0 {
-		l.AddHead(v)
-		return nil
-	}
-
-	n := &singlyLinkedNode[T]{v: v}
-
-	var curr *singlyLinkedNode[T]
-	for i := 0; i < index; i++ {
-		if i == 0 {
-			curr = l.head
-		} else {
-			curr = curr.next
-		}
-	}
-
-	next := curr.next
-	curr.next = n
-	n.next = next
-	l.length++
-	return nil
-}
-
 // AddAll appends all the given value at the bottom.
 func (l *SinglyLinkedList[T]) AddAll(vs []T) {
+	l.Lock()
+	defer l.Unlock()
 	if len(vs) == 0 {
 		return
 	}
 
 	var vhead *singlyLinkedNode[T] // vhead is always the first node which contains the head of the given values
-	var curr *singlyLinkedNode[T]  // curr is eventually the last value
+	var curr *singlyLinkedNode[T]
 	for i, v := range vs {
 		n := &singlyLinkedNode[T]{v: v}
 		if i == 0 {
@@ -109,26 +153,31 @@ func (l *SinglyLinkedList[T]) AddAll(vs []T) {
 	if l.head == nil {
 		// if list is empty
 		l.head = vhead
-		l.tail = curr
 		l.length += len(vs)
 		return
 	}
 
-	// else, append
-	l.tail.next = vhead
-	l.tail = curr
-	l.length += len(vs)
-}
+	var tail *singlyLinkedNode[T]
+	// else, append to the tail value
+	for i := 0; i < l.length; i++ {
+		if i == 0 {
+			tail = l.head
+		} else {
+			tail = tail.next
+		}
 
-// Clear removes all the data in the list. The list is still usable after clear.
-func (l *SinglyLinkedList[T]) Clear() {
-	l.head = nil
-	l.tail = nil
-	l.length = 0
+		if i == l.length-1 {
+			tail.next = vhead
+		}
+
+	}
+	l.length += len(vs)
 }
 
 // Clone returns the new SinglyLinkedList which the same with l.
 func (l *SinglyLinkedList[T]) Clone() *SinglyLinkedList[T] {
+	l.Lock()
+	defer l.Unlock()
 	nl := NewSinglyLinkedList[T]()
 
 	if l.head == nil {
@@ -156,7 +205,6 @@ func (l *SinglyLinkedList[T]) Clone() *SinglyLinkedList[T] {
 	}
 
 	nl.head = nhead
-	nl.tail = ncurr
 	nl.length = l.length
 	return nl
 }
@@ -164,6 +212,8 @@ func (l *SinglyLinkedList[T]) Clone() *SinglyLinkedList[T] {
 // GetHead returns the head value.
 // If the value is not found since the list is empty, the second returned value will be false.
 func (l *SinglyLinkedList[T]) GetHead() (v T, ok bool) {
+	l.Lock()
+	defer l.Unlock()
 	if l.head == nil {
 		return v, false
 	}
@@ -172,6 +222,8 @@ func (l *SinglyLinkedList[T]) GetHead() (v T, ok bool) {
 
 // GetAt returns the value at the given index in the list.
 func (l *SinglyLinkedList[T]) GetAt(index int) (v T, err error) {
+	l.Lock()
+	defer l.Unlock()
 	if index < 0 || l.length <= index {
 		return v, ErrInvalidIndex
 	}
@@ -180,46 +232,12 @@ func (l *SinglyLinkedList[T]) GetAt(index int) (v T, err error) {
 		return l.head.v, nil
 	}
 
-	if index == l.length-1 {
-		return l.tail.v, nil
-	}
-
 	curr := l.head
 	for i := 0; i < index; i++ {
 		curr = curr.next
 	}
 
 	return curr.v, nil
-}
-
-// GetTail returns the tail value.
-// If the value is not found since the list is empty, the second returned value will be false.
-func (l *SinglyLinkedList[T]) GetTail() (v T, ok bool) {
-	if l.tail == nil {
-		return v, false
-	}
-	return l.tail.v, true
-}
-
-// IsEmpty returns true if the list contains no values.
-func (l *SinglyLinkedList[T]) IsEmpty() bool {
-	return l.head == nil
-}
-
-// Iterator returns iteratable struct.
-// Note that the iterator has only a snapshot of list data as of this method is called,
-// and any modification to the list won't be reflected to the iterator.
-func (l *SinglyLinkedList[T]) Iterator() *SinglyLinkedListIterator[T] {
-	return &SinglyLinkedListIterator[T]{
-		curr:  l.head,
-		index: 0,
-	}
-
-}
-
-// Len returns the length of the list.
-func (l *SinglyLinkedList[T]) Len() int {
-	return l.length
 }
 
 // RemoveAt removes a value at the given index in the list.
@@ -251,47 +269,6 @@ func (l *SinglyLinkedList[T]) RemoveAt(index int) error {
 	return nil
 }
 
-// RemoveHead removes the head value.
-func (l *SinglyLinkedList[T]) RemoveHead() error {
-	if l.head == nil {
-		return ErrHeadNotFound
-	}
-
-	l.length--
-	l.head = l.head.next
-	return nil
-}
-
-// RemoveTail removes the litailvalude.
-func (l *SinglyLinkedList[T]) RemoveTail() error {
-	if l.tail == nil {
-		return ErrTailNotFound
-	}
-
-	var curr *singlyLinkedNode[T]
-	isHead := true
-	for i := 0; i < l.length-1; i++ {
-		if i == 0 {
-			curr = l.head
-		} else {
-			curr = curr.next
-		}
-		isHead = false
-	}
-
-	if isHead {
-		l.head = nil
-		l.tail = nil
-	} else {
-		l.tail = curr
-		curr.next = nil
-	}
-
-	l.length--
-
-	return nil
-}
-
 // Set replaces the value at the given index in the list with the given value.
 // ErrInvalidIndex will be responded if the index < 0 or length <= index.
 func (l *SinglyLinkedList[T]) Set(index int, v T) error {
@@ -301,11 +278,6 @@ func (l *SinglyLinkedList[T]) Set(index int, v T) error {
 
 	if index == 0 {
 		l.head.v = v
-		return nil
-	}
-
-	if index == l.length-1 {
-		l.tail.v = v
 		return nil
 	}
 

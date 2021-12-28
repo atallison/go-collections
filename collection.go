@@ -27,7 +27,7 @@ var (
 	// make sure method form
 	_ []collection[any] = []collection[any]{
 		(*ArrayList[any])(nil),
-		// (*SinglyLinkedList)(nil),
+		(*SinglyLinkedList[any])(nil),
 		// (*LinkedList)(nil),
 	}
 )
