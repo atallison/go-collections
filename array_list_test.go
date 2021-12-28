@@ -81,12 +81,12 @@ func TestArrayList_Clone(t *testing.T) {
 
 	al.AddAll([]int{3, 4})
 	MustEqual(t, []int{1, 2, 3, 4}, al.values)
-	// makes sure moditying al does not affect to nl
+	// make sure moditying al does not affect to nl
 	MustEqual(t, []int{1, 2}, nl.values)
 
 	nl.AddAll([]int{5, 6})
 	MustEqual(t, []int{1, 2, 5, 6}, nl.values)
-	// makes sure moditying nl does not affect to al
+	// make sure moditying nl does not affect to al
 	MustEqual(t, []int{1, 2, 3, 4}, al.values)
 }
 
@@ -175,53 +175,4 @@ func TestArrayList_RemoveAt(t *testing.T) {
 	err = al.RemoveAt(1)
 	MustBeNil(t, err)
 	MustEqual(t, []int{1, 3}, al.values)
-}
-
-func TestArrayList_RemoveRange(t *testing.T) {
-	al := NewArrayList[int]()
-
-	al.AddAll([]int{1, 2, 3, 4, 5, 6})
-
-	err := al.RemoveRange(2, 1) // from must be less than to
-	MustBeErr(t, err, ErrInvalidIndex)
-
-	err = al.RemoveRange(-1, 1) // must not be negative
-	MustBeErr(t, err, ErrInvalidIndex)
-
-	err = al.RemoveRange(1, 7) // must not be too large values
-	MustBeErr(t, err, ErrInvalidIndex)
-
-	err = al.RemoveRange(1, 1)
-	MustBeNil(t, err)
-	MustEqual(t, []int{1, 2, 3, 4, 5, 6}, al.values)
-
-	err = al.RemoveRange(1, 3)
-	MustBeNil(t, err)
-	MustEqual(t, []int{1, 4, 5, 6}, al.values)
-
-	err = al.RemoveRange(0, 4)
-	MustBeNil(t, err)
-	MustEqual(t, []int{}, al.values)
-}
-
-func TestArrayList_SubList(t *testing.T) {
-	al := NewArrayList[int]()
-
-	al.AddAll([]int{1, 2, 3, 4, 5, 6})
-	n, err := al.SubList(2, 1) // from must be less than to
-	MustBeErr(t, err, ErrInvalidIndex)
-
-	n, err = al.SubList(-1, 1) // must not be negative
-	MustBeErr(t, err, ErrInvalidIndex)
-
-	n, err = al.SubList(1, 7) // must not be too large values
-	MustBeErr(t, err, ErrInvalidIndex)
-
-	n, err = al.SubList(1, 1)
-	MustBeNil(t, err)
-	MustEqual(t, []int{}, n.values)
-
-	n, err = al.SubList(1, 3)
-	MustBeNil(t, err)
-	MustEqual(t, []int{2, 3}, n.values)
 }

@@ -1,11 +1,14 @@
 package collection
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+)
 
-// ArrayList is a variable-sized list.
-// This data structure is not concurrent safe.
-// The caller must be responsible to synchronize before accessing from multiple goroutines.
+// ArrayList is a variable-sized list. This data structure is concurrent safe.
 type ArrayList[T any] struct {
+	sync.Mutex
+
 	values []T
 }
 
@@ -16,11 +19,15 @@ func NewArrayList[T any]() *ArrayList[T] {
 
 // Add appends a given value to the bottom of the list.
 func (a *ArrayList[T]) Add(value T) {
+	a.Lock()
+	defer a.Unlock()
 	a.values = append(a.values, value)
 }
 
 // Clear makes the list empty. The list after Clear must be reusable.
 func (a *ArrayList[T]) Clear() {
+	a.Lock()
+	defer a.Unlock()
 	a.values = []T{}
 }
 
@@ -31,6 +38,8 @@ func (a *ArrayList[T]) IsEmpty() bool {
 
 // Iterator returns iteratable data structure based on the list.
 func (a *ArrayList[T]) Iterator() Iterator[T] {
+	a.Lock()
+	defer a.Unlock()
 	return &ArrayListIterator[T]{arrayList: a, cursor: 0}
 }
 
@@ -41,11 +50,15 @@ func (a *ArrayList[T]) Len() int {
 
 // String shows the list in the string form.
 func (a *ArrayList[T]) String() string {
+	a.Lock()
+	defer a.Unlock()
 	return fmt.Sprintf("%v", a.values)
 }
 
 // AddAll appends given values to the bottom of the list in the given order.
 func (a *ArrayList[T]) AddAll(es []T) {
+	a.Lock()
+	defer a.Unlock()
 	a.values = append(a.values, es...)
 }
 
@@ -53,6 +66,8 @@ func (a *ArrayList[T]) AddAll(es []T) {
 // When the given is less than 0 or greater than the list size,
 // ErrInvalidIndex will be responded.
 func (a *ArrayList[T]) AddAt(i int, e T) error {
+	a.Lock()
+	defer a.Unlock()
 	if i < 0 || len(a.values) < i {
 		return ErrInvalidIndex
 	}
@@ -73,6 +88,8 @@ func (a *ArrayList[T]) AddAt(i int, e T) error {
 // When the given index is less than 0 or greater than the list size,
 // ErrInvalidIndex will be responded.
 func (a *ArrayList[T]) AddAllAt(i int, es []T) error {
+	a.Lock()
+	defer a.Unlock()
 	if i < 0 || len(a.values) < i {
 		return ErrInvalidIndex
 	}
@@ -84,6 +101,8 @@ func (a *ArrayList[T]) AddAllAt(i int, es []T) error {
 // Clone clones the arraylist and return it.
 // Modifying cloned list does not affect to the original one and vice versa.
 func (a *ArrayList[T]) Clone() *ArrayList[T] {
+	a.Lock()
+	defer a.Unlock()
 	n := NewArrayList[T]()
 	n.values = a.values
 	return n
@@ -92,6 +111,8 @@ func (a *ArrayList[T]) Clone() *ArrayList[T] {
 // Get returns a value which locates at the given index of the list.
 // ErrInvalidIndex will be responded if the index < 0 or length <= index.
 func (a *ArrayList[T]) Get(index int) (ret T, err error) {
+	a.Lock()
+	defer a.Unlock()
 	if index < 0 || len(a.values) <= index {
 		return ret, ErrInvalidIndex
 	}
@@ -102,6 +123,8 @@ func (a *ArrayList[T]) Get(index int) (ret T, err error) {
 // RemoveAt removes a value at the given index in the list.
 // ErrInvalidIndex will be responded if the index < 0 or length <= index.
 func (a *ArrayList[T]) RemoveAt(index int) error {
+	a.Lock()
+	defer a.Unlock()
 	if index < 0 || len(a.values) <= index {
 		return ErrInvalidIndex
 	}
@@ -110,53 +133,15 @@ func (a *ArrayList[T]) RemoveAt(index int) error {
 	return nil
 }
 
-// RemoveRange removes values whose index is between from (inclusive) and to (exclusive).
-// The same values as from and to can be passed but it has no effect and no error will be responded.
-// ErrInvalidIndex will be responded if the given index is invalid.
-func (a *ArrayList[T]) RemoveRange(from, to int) error {
-	if from > to {
-		return ErrInvalidIndex
-	}
-
-	if from < 0 || len(a.values) <= from {
-		return ErrInvalidIndex
-	}
-
-	if len(a.values) < to {
-		return ErrInvalidIndex
-	}
-
-	a.values = append(a.values[:from], a.values[to:]...)
-	return nil
-}
-
 // Set replaces the value at the given index in the list with the given value.
 // ErrInvalidIndex will be responded if the index < 0 or length <= index.
 func (a *ArrayList[T]) Set(index int, v T) error {
+	a.Lock()
+	defer a.Unlock()
 	if index < 0 || len(a.values) <= index {
 		return ErrInvalidIndex
 	}
 
 	a.values[index] = v
 	return nil
-}
-
-// SubList returns the new ArrayList which contains the elements in the list between the specified fromIndex (inclusive) and toIndex (exclusive).
-func (a *ArrayList[T]) SubList(from, to int) (*ArrayList[T], error) {
-	if from > to {
-		return nil, ErrInvalidIndex
-	}
-
-	if from < 0 || len(a.values) <= from {
-		return nil, ErrInvalidIndex
-	}
-
-	if len(a.values) < to {
-		return nil, ErrInvalidIndex
-	}
-
-	n := NewArrayList[T]()
-	n.AddAll(a.values[from:to])
-
-	return n, nil
 }
