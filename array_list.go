@@ -1,5 +1,7 @@
 package collection
 
+import "fmt"
+
 // ArrayList is a variable-sized list.
 // This data structure is not concurrent safe.
 // The caller must be responsible to synchronize before accessing from multiple goroutines.
@@ -13,8 +15,33 @@ func NewArrayList[T any]() *ArrayList[T] {
 }
 
 // Add appends a given value to the bottom of the list.
-func (a *ArrayList[T]) Add(e T) {
-	a.values = append(a.values, e)
+func (a *ArrayList[T]) Add(value T) {
+	a.values = append(a.values, value)
+}
+
+// Clear makes the list empty. The list after Clear must be reusable.
+func (a *ArrayList[T]) Clear() {
+	a.values = []T{}
+}
+
+// IsEmpty returns true if the list contains nothing.
+func (a *ArrayList[T]) IsEmpty() bool {
+	return len(a.values) == 0
+}
+
+// Iterator returns iteratable data structure based on the list.
+func (a *ArrayList[T]) Iterator() Iterator[T] {
+	return &ArrayListIterator[T]{arrayList: a, cursor: 0}
+}
+
+// Len returns the size of the list.
+func (a *ArrayList[T]) Len() int {
+	return len(a.values)
+}
+
+// String shows the list in the string form.
+func (a *ArrayList[T]) String() string {
+	return fmt.Sprintf("%v", a.values)
 }
 
 // AddAll appends given values to the bottom of the list in the given order.
@@ -62,11 +89,6 @@ func (a *ArrayList[T]) Clone() *ArrayList[T] {
 	return n
 }
 
-// Clear removes all the data in the list. The list is still usable after clear.
-func (a *ArrayList[T]) Clear() {
-	a.values = []T{}
-}
-
 // Get returns a value which locates at the given index of the list.
 // ErrInvalidIndex will be responded if the index < 0 or length <= index.
 func (a *ArrayList[T]) Get(index int) (ret T, err error) {
@@ -75,27 +97,6 @@ func (a *ArrayList[T]) Get(index int) (ret T, err error) {
 	}
 
 	return a.values[index], nil
-}
-
-// IsEmpty returns true if the list is empty.
-func (a *ArrayList[T]) IsEmpty() bool {
-	return len(a.values) == 0
-}
-
-// Len returns the number of the elements in the list.
-func (a *ArrayList[T]) Len() int {
-	return len(a.values)
-}
-
-// Set replaces the value at the given index in the list with the given value.
-// ErrInvalidIndex will be responded if the index < 0 or length <= index.
-func (a *ArrayList[T]) Set(index int, v T) error {
-	if index < 0 || len(a.values) <= index {
-		return ErrInvalidIndex
-	}
-
-	a.values[index] = v
-	return nil
 }
 
 // RemoveAt removes a value at the given index in the list.
@@ -129,23 +130,15 @@ func (a *ArrayList[T]) RemoveRange(from, to int) error {
 	return nil
 }
 
-// RemoveIf removes values if the f(value) returns true.
-func (a *ArrayList[T]) RemoveIf(f func(index int, v T) bool) {
-	vs := []T{}
-	for i, v := range a.values {
-		if f(i, v) {
-			continue
-		}
-		vs = append(vs, v)
+// Set replaces the value at the given index in the list with the given value.
+// ErrInvalidIndex will be responded if the index < 0 or length <= index.
+func (a *ArrayList[T]) Set(index int, v T) error {
+	if index < 0 || len(a.values) <= index {
+		return ErrInvalidIndex
 	}
 
-	a.Clear()
-	a.AddAll(vs)
-}
-
-// Slice returns underlying slice in the arraylist.
-func (a *ArrayList[T]) Slice() []T {
-	return a.values
+	a.values[index] = v
+	return nil
 }
 
 // SubList returns the new ArrayList which contains the elements in the list between the specified fromIndex (inclusive) and toIndex (exclusive).
@@ -166,51 +159,4 @@ func (a *ArrayList[T]) SubList(from, to int) (*ArrayList[T], error) {
 	n.AddAll(a.values[from:to])
 
 	return n, nil
-}
-
-// ReplaceAll applies the given f to all the values in the list.
-func (a *ArrayList[T]) ReplaceAll(f func(v T) T) {
-	for i, v := range a.values {
-		a.values[i] = f(v)
-	}
-}
-
-// Map applies f to the list values then return it as a new ArrayList.
-// Map does not break the original arraylist. If you want to do that, you can use ReplaceAll.
-func (a *ArrayList[T]) Map(f func(v T) T) *ArrayList[T] {
-	ret := make([]T, len(a.values))
-	for i, v := range a.values {
-		ret[i] = f(v)
-	}
-	n := NewArrayList[T]()
-	n.AddAll(ret)
-	return n
-}
-
-// ForEach runs the given f to each value in the list.
-func (a *ArrayList[T]) ForEach(f func(index int, v T)) {
-	for i, v := range a.values {
-		f(i, v)
-	}
-}
-
-// Filter returns a new ArrayList which only contain filtered value by the given f.
-// Filter does not break the original ArrayList.
-func (a *ArrayList[T]) Filter(f func(index int, v T) bool) *ArrayList[T] {
-	ret := []T{}
-	for i, v := range a.values {
-		if f(i, v) {
-			ret = append(ret, v)
-		}
-	}
-	n := NewArrayList[T]()
-	n.AddAll(ret)
-	return n
-}
-
-// Iterator returns iteratable struct based on current Arraylist.
-// Note that the iterator has only a snapshot of list data as of this method is called,
-// and any modification to the list won't be reflected to the iterator.
-func (a *ArrayList[T]) Iterator() *ArrayListIterator[T] {
-	return &ArrayListIterator[T]{values: a.values, index: 0}
 }

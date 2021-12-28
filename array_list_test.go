@@ -1,8 +1,6 @@
 package collection
 
-import (
-	"testing"
-)
+import "testing"
 
 func TestArrayList_Add(t *testing.T) {
 	al := NewArrayList[int]()
@@ -206,24 +204,6 @@ func TestArrayList_RemoveRange(t *testing.T) {
 	MustEqual(t, []int{}, al.values)
 }
 
-func TestArrayList_RemoveIf(t *testing.T) {
-	al := NewArrayList[int]()
-
-	al.AddAll([]int{1, 2, 3, 4, 5, 6})
-
-	al.RemoveIf(func(i, v int) bool { return v%2 == 0 })
-	MustEqual(t, []int{1, 3, 5}, al.values)
-}
-
-func TestArrayList_Slice(t *testing.T) {
-	al := NewArrayList[int]()
-
-	al.AddAll([]int{1, 2, 3, 4, 5, 6})
-	s := al.Slice()
-	MustEqual(t, []int{1, 2, 3, 4, 5, 6}, al.values)
-	MustEqual(t, s, al.values)
-}
-
 func TestArrayList_SubList(t *testing.T) {
 	al := NewArrayList[int]()
 
@@ -244,44 +224,4 @@ func TestArrayList_SubList(t *testing.T) {
 	n, err = al.SubList(1, 3)
 	MustBeNil(t, err)
 	MustEqual(t, []int{2, 3}, n.values)
-}
-
-func TestArrayList_ReplaceAll(t *testing.T) {
-	al := NewArrayList[int]()
-
-	al.AddAll([]int{1, 2, 3, 4, 5, 6})
-	al.ReplaceAll(func(v int) int { return v * 2 })
-	MustEqual(t, []int{2, 4, 6, 8, 10, 12}, al.values)
-}
-
-func TestArrayList_Map(t *testing.T) {
-	al := NewArrayList[int]()
-
-	al.AddAll([]int{1, 2, 3, 4, 5, 6})
-	r := al.Map(func(v int) int { return v * 2 })
-	MustEqual(t, []int{2, 4, 6, 8, 10, 12}, r.values)
-	MustEqual(t, []int{1, 2, 3, 4, 5, 6}, al.values) // original list must not be changed
-}
-
-func TestArrayList_ForEach(t *testing.T) {
-	al := NewArrayList[int]()
-
-	al.AddAll([]int{1, 2, 3, 4, 5, 6})
-	buff := []int{}
-	al.ForEach(func(index, v int) {
-		buff = append(buff, index*v)
-	})
-	MustEqual(t, []int{0, 2, 6, 12, 20, 30}, buff)
-	MustEqual(t, []int{1, 2, 3, 4, 5, 6}, al.values) // original list must not be changed
-}
-
-func TestArrayList_Filter(t *testing.T) {
-	al := NewArrayList[int]()
-
-	al.AddAll([]int{1, 2, 3, 4, 5, 6})
-	r := al.Filter(func(index, v int) bool {
-		return v%2 == 0
-	})
-	MustEqual(t, []int{2, 4, 6}, r.values)
-	MustEqual(t, []int{1, 2, 3, 4, 5, 6}, al.values) // original list must not be changed
 }
