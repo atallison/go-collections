@@ -9,4 +9,5 @@ type Iterator[T any] interface {
 
 var _ []Iterator[any] = []Iterator[any]{
 	(*ArrayListIterator[any])(nil),
+	(*SinglyLinkedListIterator[any])(nil),
 }
