@@ -37,7 +37,7 @@ func (a *ArrayList[T]) IsEmpty() bool {
 }
 
 // Iterator returns iteratable data structure based on the list.
-func (a *ArrayList[T]) Iterator() Iterator[T] {
+func (a *ArrayList[T]) Iterator() *ArrayListIterator[T] {
 	a.Lock()
 	defer a.Unlock()
 	return &ArrayListIterator[T]{arrayList: a, cursor: 0}

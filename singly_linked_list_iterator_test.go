@@ -38,14 +38,14 @@ func TestSinglyLinkedListIterator_Set(t *testing.T) {
 		v := i.Value()
 		i.Set(v * 2)
 	}
-	collectionMustEqual[int](t, []int{2, 4, 6, 8, 10}, l)
+	collectionMustEqual[int](t, []int{2, 4, 6, 8, 10}, l.Iterator())
 
 	i2 := l.Iterator()
 	for i2.Next() {
 		v := i2.Value()
 		i2.Set(v * 2)
 	}
-	collectionMustEqual[int](t, []int{4, 8, 12, 16, 20}, l)
+	collectionMustEqual[int](t, []int{4, 8, 12, 16, 20}, l.Iterator())
 }
 
 func TestSinglyLinkedListIterator_Remove(t *testing.T) {
@@ -59,7 +59,7 @@ func TestSinglyLinkedListIterator_Remove(t *testing.T) {
 			i.Remove()
 		}
 	}
-	collectionMustEqual[int](t, []int{1, 3, 5}, l)
+	collectionMustEqual[int](t, []int{1, 3, 5}, l.Iterator())
 
 	i2 := l.Iterator()
 	for i2.Next() {
@@ -68,5 +68,5 @@ func TestSinglyLinkedListIterator_Remove(t *testing.T) {
 			i2.Remove()
 		}
 	}
-	collectionMustEqual[int](t, []int{1, 5}, l)
+	collectionMustEqual[int](t, []int{1, 5}, l.Iterator())
 }

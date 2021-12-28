@@ -69,7 +69,7 @@ func (l *SinglyLinkedList[T]) IsEmpty() bool {
 // Iterator returns iteratable struct.
 // Note that the iterator has only a snapshot of list data as of this method is called,
 // and any modification to the list won't be reflected to the iterator.
-func (l *SinglyLinkedList[T]) Iterator() Iterator[T] {
+func (l *SinglyLinkedList[T]) Iterator() *SinglyLinkedListIterator[T] {
 	l.Lock()
 	defer l.Unlock()
 	return &SinglyLinkedListIterator[T]{

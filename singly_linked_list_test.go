@@ -11,27 +11,27 @@ func TestSinglyLinkedList_Add(t *testing.T) {
 	l.Add(1)
 	MustEqual(t, 1, l.head.v)
 	MustEqual(t, 1, l.length)
-	collectionMustEqual[int](t, []int{1}, l)
+	collectionMustEqual[int](t, []int{1}, l.Iterator())
 
 	l.Add(2)
 	MustEqual(t, 1, l.head.v)
-	collectionMustEqual[int](t, []int{1, 2}, l)
+	collectionMustEqual[int](t, []int{1, 2}, l.Iterator())
 	MustEqual(t, 2, l.length)
 }
 
 func TestSinglyLinkedList_Clear(t *testing.T) {
 	l := NewSinglyLinkedList[int]()
 	l.AddAll([]int{1, 2, 3})
-	collectionMustEqual[int](t, []int{1, 2, 3}, l)
+	collectionMustEqual[int](t, []int{1, 2, 3}, l.Iterator())
 	MustEqual(t, 3, l.length)
 
 	l.Clear()
-	collectionMustEqual[int](t, []int{}, l)
+	collectionMustEqual[int](t, []int{}, l.Iterator())
 	MustEqual(t, 0, l.length)
 
 	// makes sure the cleared list is still usable
 	l.AddAll([]int{1, 2, 3})
-	collectionMustEqual[int](t, []int{1, 2, 3}, l)
+	collectionMustEqual[int](t, []int{1, 2, 3}, l.Iterator())
 	MustEqual(t, 3, l.length)
 }
 
@@ -68,7 +68,7 @@ func TestSinglyLinkedList_AddHead(t *testing.T) {
 	l.Add(1)
 	l.Add(2)
 	l.AddHead(3)
-	collectionMustEqual[int](t, []int{3, 1, 2}, l)
+	collectionMustEqual[int](t, []int{3, 1, 2}, l.Iterator())
 	MustEqual(t, 3, l.length)
 
 	MustEqual(t, 3, l.head.v)
@@ -77,29 +77,29 @@ func TestSinglyLinkedList_AddHead(t *testing.T) {
 func TestSinglyLinkedList_AddAll(t *testing.T) {
 	l := NewSinglyLinkedList[int]()
 	l.AddAll([]int{})
-	collectionMustEqual[int](t, []int{}, l)
+	collectionMustEqual[int](t, []int{}, l.Iterator())
 	MustEqual(t, 0, l.length)
 
 	l.AddAll([]int{0})
-	collectionMustEqual[int](t, []int{0}, l)
+	collectionMustEqual[int](t, []int{0}, l.Iterator())
 	MustEqual(t, 1, l.length)
 
 	MustEqual(t, 0, l.head.v)
 
 	l.AddAll([]int{1, 2, 3})
-	collectionMustEqual[int](t, []int{0, 1, 2, 3}, l)
+	collectionMustEqual[int](t, []int{0, 1, 2, 3}, l.Iterator())
 	MustEqual(t, 4, l.length)
 
 	MustEqual(t, 0, l.head.v)
 
 	l.AddAll([]int{4, 5, 6})
-	collectionMustEqual[int](t, []int{0, 1, 2, 3, 4, 5, 6}, l)
+	collectionMustEqual[int](t, []int{0, 1, 2, 3, 4, 5, 6}, l.Iterator())
 	MustEqual(t, 7, l.length)
 
 	MustEqual(t, 0, l.head.v)
 
 	l.AddAll([]int{7})
-	collectionMustEqual[int](t, []int{0, 1, 2, 3, 4, 5, 6, 7}, l)
+	collectionMustEqual[int](t, []int{0, 1, 2, 3, 4, 5, 6, 7}, l.Iterator())
 	MustEqual(t, 8, l.length)
 
 	MustEqual(t, 0, l.head.v)
@@ -108,29 +108,29 @@ func TestSinglyLinkedList_AddAll(t *testing.T) {
 func TestSinglyLinkedList_Clone(t *testing.T) {
 	l := NewSinglyLinkedList[int]()
 	l.AddAll([]int{1, 2, 3})
-	collectionMustEqual[int](t, []int{1, 2, 3}, l)
+	collectionMustEqual[int](t, []int{1, 2, 3}, l.Iterator())
 	MustEqual(t, 3, l.length)
 
 	nl := l.Clone()
-	collectionMustEqual[int](t, []int{1, 2, 3}, l)
+	collectionMustEqual[int](t, []int{1, 2, 3}, l.Iterator())
 	MustEqual(t, 3, nl.length)
 
 	// add values into l
 	l.AddAll([]int{4, 5, 6})
-	collectionMustEqual[int](t, []int{1, 2, 3, 4, 5, 6}, l)
+	collectionMustEqual[int](t, []int{1, 2, 3, 4, 5, 6}, l.Iterator())
 	MustEqual(t, 6, l.length)
 
 	// makes sure the cloned list is not changed
-	collectionMustEqual[int](t, []int{1, 2, 3}, nl)
+	collectionMustEqual[int](t, []int{1, 2, 3}, nl.Iterator())
 	MustEqual(t, 3, nl.length)
 
 	// add values into nl
 	nl.AddAll([]int{7, 8, 9})
-	collectionMustEqual[int](t, []int{1, 2, 3, 7, 8, 9}, nl)
+	collectionMustEqual[int](t, []int{1, 2, 3, 7, 8, 9}, nl.Iterator())
 	MustEqual(t, 6, nl.length)
 
 	// make srue the original list is not changed
-	collectionMustEqual[int](t, []int{1, 2, 3, 4, 5, 6}, l)
+	collectionMustEqual[int](t, []int{1, 2, 3, 4, 5, 6}, l.Iterator())
 	MustEqual(t, 6, l.length)
 }
 
@@ -144,7 +144,7 @@ func TestSinglyLinkedList_GetHead(t *testing.T) {
 	v, ok = l.GetHead()
 	MustEqual(t, true, ok)
 	MustEqual(t, 1, v)
-	collectionMustEqual[int](t, []int{1, 2, 3}, l)
+	collectionMustEqual[int](t, []int{1, 2, 3}, l.Iterator())
 	MustEqual(t, 3, l.length)
 }
 
@@ -183,19 +183,19 @@ func TestSinglyLinkedList_Set(t *testing.T) {
 
 	err = l.Set(0, 6)
 	MustBeNil(t, err)
-	collectionMustEqual[int](t, []int{6, 2, 3, 4, 5}, l)
+	collectionMustEqual[int](t, []int{6, 2, 3, 4, 5}, l.Iterator())
 
 	err = l.Set(4, 7)
 	MustBeNil(t, err)
-	collectionMustEqual[int](t, []int{6, 2, 3, 4, 7}, l)
+	collectionMustEqual[int](t, []int{6, 2, 3, 4, 7}, l.Iterator())
 
 	err = l.Set(1, 8)
 	MustBeNil(t, err)
-	collectionMustEqual[int](t, []int{6, 8, 3, 4, 7}, l)
+	collectionMustEqual[int](t, []int{6, 8, 3, 4, 7}, l.Iterator())
 
 	err = l.Set(3, 9)
 	MustBeNil(t, err)
-	collectionMustEqual[int](t, []int{6, 8, 3, 9, 7}, l)
+	collectionMustEqual[int](t, []int{6, 8, 3, 9, 7}, l.Iterator())
 }
 
 func TestSinglyLinkedList_RemoveAt(t *testing.T) {
@@ -209,13 +209,13 @@ func TestSinglyLinkedList_RemoveAt(t *testing.T) {
 
 	err = l.RemoveAt(2)
 	MustBeNil(t, err)
-	collectionMustEqual[int](t, []int{1, 2, 4, 5}, l)
+	collectionMustEqual[int](t, []int{1, 2, 4, 5}, l.Iterator())
 
 	err = l.RemoveAt(3)
 	MustBeNil(t, err)
-	collectionMustEqual[int](t, []int{1, 2, 4}, l)
+	collectionMustEqual[int](t, []int{1, 2, 4}, l.Iterator())
 
 	err = l.RemoveAt(0)
 	MustBeNil(t, err)
-	collectionMustEqual[int](t, []int{2, 4}, l)
+	collectionMustEqual[int](t, []int{2, 4}, l.Iterator())
 }

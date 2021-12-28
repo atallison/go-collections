@@ -32,13 +32,14 @@ func MustBeErr(t *testing.T, expected, actual error) {
 
 // collectionMustEqual makes sure the given list is logically the same as the given slice.
 // For example, a linkedlist 1 -> 2 -> 3 -> nil is considered to be the same as [1, 2, 3].
-func collectionMustEqual[T any](t *testing.T, values []T, c collection[T]) {
+func collectionMustEqual[T any](t *testing.T, values []T, i Iterator[T]) {
 	t.Helper()
 	buff := []T{}
-	i := c.Iterator()
+	cnt := 0
 	for i.Next() {
 		buff = append(buff, i.Value())
+		cnt++
 	}
 	MustEqual(t, values, buff)
-	MustEqual(t, len(values), c.Len())
+	MustEqual(t, len(values), cnt)
 }
