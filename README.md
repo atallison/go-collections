@@ -39,7 +39,6 @@ Note that I don't really want to maintain this way and I hope generics official 
 ## What to be implemented
 
 - [x] ArrayList
-- [x] SinglyLinkedList
 - [ ] LinkedList
 - [ ] Deque
 - [ ] Queue
