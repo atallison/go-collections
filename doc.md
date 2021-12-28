@@ -30,12 +30,12 @@ var (
 
 ```go
 type ArrayList[T any] struct {
+	sync.Mutex
+
 	// Has unexported fields.
 }
 ```
-    ArrayList is a variable-sized list. This data structure is not concurrent
-    safe. The caller must be responsible to synchronize before accessing from
-    multiple goroutines.
+    ArrayList is a variable-sized list. This data structure is concurrent safe.
 
 ### func NewArrayList[T any]() *ArrayList[T]
     NewArrayList returns an ArrayList based on the specified type.
@@ -80,22 +80,12 @@ type ArrayList[T any] struct {
     RemoveAt removes a value at the given index in the list. ErrInvalidIndex
     will be responded if the index < 0 or length <= index.
 
-### func (a *ArrayList[T]) RemoveRange(from, to int) error
-    RemoveRange removes values whose index is between from (inclusive) and to
-    (exclusive). The same values as from and to can be passed but it has no
-    effect and no error will be responded. ErrInvalidIndex will be responded if
-    the given index is invalid.
-
 ### func (a *ArrayList[T]) Set(index int, v T) error
     Set replaces the value at the given index in the list with the given value.
     ErrInvalidIndex will be responded if the index < 0 or length <= index.
 
 ### func (a *ArrayList[T]) String() string
     String shows the list in the string form.
-
-### func (a *ArrayList[T]) SubList(from, to int) (*ArrayList[T], error)
-    SubList returns the new ArrayList which contains the elements in the list
-    between the specified fromIndex (inclusive) and toIndex (exclusive).
 
 ```go
 type ArrayListIterator[T any] struct {
@@ -159,6 +149,8 @@ type LinkedNode[T any] struct {
 
 ```go
 type SinglyLinkedList[T any] struct {
+	sync.Mutex
+
 	// Has unexported fields.
 }
 ```
@@ -166,17 +158,13 @@ type SinglyLinkedList[T any] struct {
     concurrent safe.
 
 ### func NewSinglyLinkedList[T any]() *SinglyLinkedList[T]
-    NewSinglyLinkedList returns an ArrayList based on the specified type.
+    NewSinglyLinkedList returns an SinglyLinkedList based on the specified type.
 
 ### func (l *SinglyLinkedList[T]) Add(v T)
-    Add appends a given value to the bottom of the list. This is O(1) because
-    SinglyLinkedList internally has the pointer to the tail node.
+    Add appends a given value to the bottom of the list.
 
 ### func (l *SinglyLinkedList[T]) AddAll(vs []T)
     AddAll appends all the given value at the bottom.
-
-### func (l *SinglyLinkedList[T]) AddAt(index int, v T) error
-    AddAt appends a given value at the given index position in the list.
 
 ### func (l *SinglyLinkedList[T]) AddHead(v T)
     AddHead inserts the given value at the head of the list.
@@ -210,9 +198,6 @@ type SinglyLinkedList[T any] struct {
     RemoveAt removes a value at the given index in the list. ErrInvalidIndex
     will be responded if the index < 0 or length <= index.
 
-### func (l *SinglyLinkedList[T]) RemoveHead() error
-    RemoveHead removes the head value.
-
 ### func (l *SinglyLinkedList[T]) Set(index int, v T) error
     Set replaces the value at the given index in the list with the given value.
     ErrInvalidIndex will be responded if the index < 0 or length <= index.
@@ -228,9 +213,19 @@ type SinglyLinkedListIterator[T any] struct {
     SinglyLinkedListIterator is the iteratable made of SinglyLinkedList.
 
 ### func (i *SinglyLinkedListIterator[T]) Next() bool
+    Next returns if the iterator has the next value.
 
 ### func (i *SinglyLinkedListIterator[T]) Remove()
+    Remove removes the value which is returned by the last call of Value() from
+    the original SinglyLinkedList. Note that this must be called at most once
+    per a Value() call. Unless, it might lead to list/iterator inconsistent or
+    invalid state and that case is not tested.
 
 ### func (i *SinglyLinkedListIterator[T]) Set(value T)
+    Set sets the value which is returned by the last call of Value() from the
+    original SinglyLinkedList. Note that this must be called at most once per a
+    Value() call. Unless, it might lead to list/iterator inconsistent or invalid
+    state and that case is not tested.
 
 ### func (i *SinglyLinkedListIterator[T]) Value() T
+    Value returns the next value. This must be called when Next() is true.
