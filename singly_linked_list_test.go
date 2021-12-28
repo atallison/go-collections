@@ -56,6 +56,9 @@ func TestSinglyLinkedList_Len(t *testing.T) {
 }
 
 func TestSinglyLinkedList_String(t *testing.T) {
+	l := NewSinglyLinkedList[int]()
+	l.AddAll([]int{1, 2, 3})
+	MustEqual(t, "[1 2 3]", l.String())
 }
 
 func TestSinglyLinkedList_AddHead(t *testing.T) {

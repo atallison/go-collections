@@ -95,19 +95,19 @@ func (l *SinglyLinkedList[T]) String() string {
 
 	var sb strings.Builder
 	sb.WriteString("[")
-	sb.WriteString(fmt.Sprintf("%v, ", l.head))
 	curr := l.head
 	for {
 		if curr == nil {
 			break
 		}
 
+		sb.WriteString(fmt.Sprintf("%v ", curr.v))
 		curr = curr.next
-		sb.WriteString(fmt.Sprintf("%v, ", curr))
 	}
 
-	sb.WriteString("]")
-	return sb.String()
+	s := strings.TrimSuffix(sb.String(), " ")
+
+	return s + "]"
 }
 
 // AddHead inserts the given value at the head of the list.

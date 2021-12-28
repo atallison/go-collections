@@ -161,6 +161,12 @@ func TestArrayList_Set(t *testing.T) {
 	MustEqual(t, []int{1, 2, 4}, al.values)
 }
 
+func TestArrayList_String(t *testing.T) {
+	al := NewArrayList[int]()
+	al.AddAll([]int{1, 2, 3})
+	MustEqual(t, "[1 2 3]", al.String())
+}
+
 func TestArrayList_RemoveAt(t *testing.T) {
 	al := NewArrayList[int]()
 
