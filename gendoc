@@ -1,3 +1,5 @@
 #!/bin/bash
 
-gotip doc -all | go run cmd/generics-doc-markdown/main.go > doc.md
+gotip doc -all ./arraylist/ | go run cmd/generics-doc-markdown/main.go > doc.md
+echo "" >> doc.md
+gotip doc -all ./linkedlist/ | go run cmd/generics-doc-markdown/main.go >> doc.md
