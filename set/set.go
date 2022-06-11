@@ -32,11 +32,9 @@ func (s *Set[T]) Clear() {
 	s.values = make(map[T]struct{})
 }
 
-func (s *Set[T]) Each(do func(i int, obj *T)) {
-	i := 0
+func (s *Set[T]) Each(do func(obj T)) {
 	for obj := range s.values {
-		do(i, &obj)
-		i++
+		do(obj)
 	}
 }
 
